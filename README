@@ -1,0 +1,13 @@
+1. LOGGING
+
+RUNNING MIGRATION:
+python manage.py migrate
+
+CREATING SUPERUSER:
+python manage.py createsuperuser
+
+CREATING ANY OTHER USER:
+-go to http://127.0.0.1:8000/admin/
+
+USE:
+http://127.0.0.1:8000/accounts/login/
