@@ -17,13 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 #from app import views
-from app.views import createview
+from app.views import createview, courses
 
 urlpatterns = [
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^accounts/profile/$', createview),
+    url(r'^login/', 'django.contrib.auth.views.login'),
+    url(r'^logout/', 'django.contrib.auth.views.logout'),
+    url(r'^accounts/profile/', createview),
     url(r'^admin/', admin.site.urls),
-    #url(r'^courses/$', views.courses),
-    url(r'', include('app.urls')),
+    #url(r'^courses/', include('app.urls')),
+	url(r'^courses/', courses)
+
 ]
