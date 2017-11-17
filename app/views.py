@@ -15,5 +15,4 @@ def courses(request):
 
 @login_required()
 def createview(request):
-    html = "<html><body>You are logged in!</body></br> <a href=\"/logout\">Logout</a></html>"
-    return HttpResponse(html)
+	return render(request, 'app/main.html')

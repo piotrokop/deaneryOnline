@@ -21,10 +21,11 @@ from app.views import createview, courses
 
 urlpatterns = [
     url(r'^login/', auth_views.login, name='login'),
-    url(r'^logout/', auth_views.logout),
+	url(r'^accounts/login/', auth_views.login, name='accounts-login'),
+    url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^accounts/profile/', createview),
+	url(r'^$', createview, name='main'),
     url(r'^admin/', admin.site.urls),
-    #url(r'^courses/', include('app.urls')),
-	url(r'^courses/', courses)
+	url(r'^courses/', courses, name='courses')
 
 ]

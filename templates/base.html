@@ -6,19 +6,19 @@
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
 {% block extrastyle %}{% endblock %}
 <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
-{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static 'admin/css/rtl.css' %}{% endblock %}" />{% endif %}
 <script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
 <script type="text/javascript">window.__admin_utc_offset__ = "{% filter escapejs %}{% now "Z" %}{% endfilter %}";</script>
+{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}" />
 {% block extrahead %}{% endblock %}
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
 </head>
 {% load i18n %}
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
-
 <!-- Container -->
 <div id="container">
-
     {% if not is_popup %}
     <!-- Header -->
     <div id="header">
@@ -33,6 +33,7 @@
                 <strong>{% firstof user.get_short_name user.get_username %}</strong>.
             {% endblock %}
             {% block userlinks %}
+				jsk
                 {% if site_url %}
                     <a href="{{ site_url }}">{% trans 'View site' %}</a> /
                 {% endif %}
@@ -50,12 +51,19 @@
         </div>
         {% endif %}
         {% endblock %}
-        {% block nav-global %}{% endblock %}
+      
     </div>
     <!-- END Header -->
     {% block breadcrumbs %}
     <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% trans 'Deanery Online' %}</a>
+    <a href="{% url 'admin:index' %}">{% trans 'Deanery Online Admin Area' %}</a><br />
+	{% block nav-global %}
+			<a href={% url 'main' %}>Home</a><br />
+			{% if user.is_authenticated %}
+			<a href={% url 'courses' %}>Courses</a><br />
+				<a href={% url 'logout' %}>Logout</a>
+			{% endif %}
+	{% endblock %}
     {% if title %} &rsaquo; {{ title }}{% endif %}
     </div>
     {% endblock %}
