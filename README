@@ -1,8 +1,5 @@
 1. LOGGING
 
-RUNNING MIGRATION:
-python manage.py migrate
-
 CREATING SUPERUSER:
 python manage.py createsuperuser
 
@@ -11,3 +8,29 @@ CREATING ANY OTHER USER:
 
 USE:
 http://127.0.0.1:8000/accounts/login/
+
+
+2. EXAMPLE OF PROSPECTIVE EDITING USER/PROFILE:
+
+def update_profile(request, user_id):
+    user = User.objects.get(pk=user_id)
+    user.profile.semester = 7
+    user.save()
+
+
+3. CLEAN DATABASE:
+python manage.py flush
+
+
+4. ENTIRE FLOW TO PREPARE SAMPLE DATABASE:
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py loaddata fixtures/initial_user_roles.json
+python manage.py loaddata fixtures/initial_users.json
+python manage.py loaddata fixtures/initial_profiles.json
+
+
+5. DUMPING DATA FOR USERS TABLE:
+after creating users manually
+./manage.py dumpdata auth.user --indent 2 > user.json
