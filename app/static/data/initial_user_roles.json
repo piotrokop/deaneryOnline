@@ -1,0 +1,23 @@
+[
+  {
+    "model": "app.UserRole",
+    "pk": 1,
+    "fields": {
+      "name": "students"
+    }
+  },
+  {
+    "model": "app.UserRole",
+    "pk": 2,
+    "fields": {
+      "name": "academics"
+    }
+  },
+  {
+    "model": "app.UserRole",
+    "pk": 3,
+    "fields": {
+      "name": "deans"
+    }
+  }
+]

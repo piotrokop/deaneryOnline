@@ -11,8 +11,8 @@ from app.models import Course
 def courses(request):
 	user_role = 2
 	courses = Course.objects.all()
-	return render(request, 'app/courses.html', {"role" : user_role, "all_courses" : courses})
+	return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses})
 
 @login_required()
 def createview(request):
-	return render(request, 'app/main.html')
+	return render(request, 'main.html')
