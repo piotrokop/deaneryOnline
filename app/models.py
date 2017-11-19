@@ -9,8 +9,15 @@ from django.dispatch import receiver
 # Create your models here.
 
 class Course(models.Model):
-	course_id = models.BigIntegerField(primary_key=True)
+	course_id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=30)
+	description = models.TextField()
+	exercises = models.IntegerField()
+	laboratories = models.IntegerField()
+	project = models.IntegerField()
+	seminars = models.IntegerField()
+	exam = models.IntegerField()
+	ects = models.IntegerField()
 
 	class Meta:
 		ordering = ['name']

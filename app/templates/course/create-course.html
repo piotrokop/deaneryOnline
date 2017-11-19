@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block branding %}
+Courses
+{% endblock %}
+
+{% block content %}
+		<div id="top-bar">
+		</div>
+		<div id="container">
+			{% if edit == 1 %}
+				<div id="container-title">Edit course</div>
+			{% else %}
+				<div id="container-title">Create course</div>
+			{% endif %}
+			<div id="container-content">
+				<form method="post" class="post-form">
+				{% csrf_token %}
+					<table  width = "100%" >
+					<tr><td align = "right" >Name</td><td align = "left" >{{form.name}}</td></tr>
+					<tr><td width = "40%"  align = "right" >Description</td><td align = "left" >{{form.description}}</td></tr>
+					</table>
+					<table  width = "100%" >
+					<tr><td align = "right" >ECTS</td><td></td><td width = "85%"  align = "left" >{{form.ects}}</td></tr>
+					<tr><td width = "40%" align = "right" >Exercises</td><td width = "5%">{{form.if_exer}}</td><td align = "left" >{{form.exercises}}</td></tr>
+					<tr><td align = "right" >Laboratories</td><td>{{form.if_lab}}</td><td align = "left" >{{form.laboratories}}</td></tr>
+					<tr><td align = "right" >Project</td><td>{{form.if_proj}}</td><td align = "left" >{{form.project}}</td></tr>
+					<tr><td align = "right" >Seminars</td><td>{{form.if_sem}}</td><td align = "left" >{{form.seminars}}</td></tr>
+					<tr><td align = "right" >Exam</td><td>{{form.exam}}</td></tr>
+					</table>
+					<br/>
+					<button type="submit" class="save btn btn-default">Submit</button>
+				</form>
+			
+			</div>
+		</div>
+{% endblock %}
