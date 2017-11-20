@@ -1,0 +1,47 @@
+[
+  {
+    "model": "app.Course",
+    "pk": 1,
+    "fields": {
+      "course_id": 1,
+      "name": "testowy",
+      "description": "testowy przedmiot",
+	  "exercises": 30,
+	  "laboratories": 30,
+	  "project": 0,
+	  "seminars": 0,
+	  "exam": 0,
+	  "ects": 4
+    }
+  },
+  {
+    "model": "app.Course",
+    "pk": 2,
+    "fields": {
+      "course_id": 2,
+      "name": "rzeznia",
+      "description": "rzeznia jakich malo",
+	  "exercises": 0,
+	  "laboratories": 0,
+	  "project": 60,
+	  "seminars": 60,
+	  "exam": 1,
+	  "ects": 1
+    }
+  },
+  {
+    "model": "app.Course",
+    "pk": 3,
+    "fields": {
+      "course_id": 3,
+      "name": "programowanie",
+      "description": "robienie programow na zaliczenie",
+	  "exercises": 30,
+	  "laboratories": 60,
+	  "project": 10,
+	  "seminars": 0,
+	  "exam": 1,
+	  "ects": 6
+    }
+  }
+]

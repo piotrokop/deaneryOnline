@@ -29,6 +29,7 @@ python manage.py migrate
 python manage.py loaddata app/static/data/initial_user_roles.json
 python manage.py loaddata app/static/data/initial_users.json
 python manage.py loaddata app/static/data/initial_profiles.json
+python manage.py loaddata app/static/data/initial_courses.json
 
 
 5. DUMPING DATA FOR USERS TABLE:

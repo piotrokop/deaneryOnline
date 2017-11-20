@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import Course
 from app.forms import CourseForm
+from app.models import UserRole
+from django.contrib.auth.models import User
 
 # Create your views here.
 def create_course(request):
@@ -96,9 +98,11 @@ def edit_course(request, id):
 	return render(request, 'course/create-course.html', {"form" : form, "edit": 1})
 
 def courses(request):
-	user_role = 2
-	courses = Course.objects.all()
-	return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses})
+	if request.user.is_authenticated():
+		user_id = User.objects.get(pk=request.user.id).pk
+		user_role = UserRole.objects.get(pk=user_id).pk
+		courses = Course.objects.all()
+		return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses})
 
 @login_required()
 def createview(request):
