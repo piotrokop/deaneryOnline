@@ -1,5 +1,4 @@
 """deaneryOnline URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
 Examples:
@@ -17,14 +16,15 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 #from app import views
-from app.views import createview, courses
+from app.views import createview, courses, create_course
 
 urlpatterns = [
-    #url(r'^login/', 'django.contrib.auth.views.login'),
-    #url(r'^logout/', 'django.contrib.auth.views.logout'),
-    #url(r'^accounts/profile/', createview),
+    url(r'^login/', auth_views.login, name='login'),
+	url(r'^accounts/login/', auth_views.login, name='accounts-login'),
+    url(r'^logout/', auth_views.logout, name='logout'),
+    url(r'^accounts/profile/', createview),
+	url(r'^$', createview, name='main'),
     url(r'^admin/', admin.site.urls),
-    #url(r'^courses/', include('app.urls')),
-	url(r'^courses/', courses)
-
+	url(r'^courses/', courses, name='courses'),
+	url(r'^create-course/', create_course, name='create-course')
 ]
