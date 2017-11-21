@@ -16,7 +16,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 #from app import views
-from app.views import createview, courses, create_course, edit_course
+from app.views import createview, courses, create_course, edit_course, course_details
 
 urlpatterns = [
     url(r'^login/', auth_views.login, name='login'),
@@ -28,4 +28,5 @@ urlpatterns = [
 	url(r'^courses/', courses, name='courses'),
 	url(r'^create-course/', create_course, name='create-course'),
 	url(r'^edit-course/(?P<id>[0-9]+)/', edit_course, name='edit-course'),
+	url(r'^course-details/(?P<id>[0-9]+)/', course_details, name='course-details'),
 ]

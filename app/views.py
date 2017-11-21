@@ -103,6 +103,28 @@ def courses(request):
 		user_role = UserRole.objects.get(pk=user_id).pk
 		courses = Course.objects.all()
 		return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses})
+		
+def course_details(request, id):
+	course = Course.objects.get(course_id = id)
+	name = course.name
+	description = course.description
+	ects = course.ects
+	exam = course.exam
+	exercises = course.exercises
+	laboratories = course.laboratories
+	project = course.project
+	seminars = course.seminars
+	
+	details = {'name': name, 
+	'description': description, 
+	'ects': ects, 
+	'exam': exam, 
+	'exercises': exercises, 
+	'laboratories': laboratories, 
+	'project': project, 
+	'seminars': seminars}
+	
+	return render(request, 'course/course-details.html', {"course_details" : details})
 
 @login_required()
 def createview(request):

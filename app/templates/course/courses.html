@@ -19,7 +19,9 @@
 				{% if role == 1 %}
 					{% for course in all_courses %}
 						<tr>
-							<td>{{course}}</td>
+							<td>
+								<a href="{% url 'course-details' id=course.pk %}">{{course}}</a>
+							</td>
 							<td>
 								<input type="button" value="Sign in">
 							</td>	
@@ -28,7 +30,9 @@
 				{% elif role == 2 or role == 3 %}
 					{% for course in all_courses %}
 						<tr>
-							<td>{{course}}</td>
+							<td>
+								<a href="{% url 'course-details' id=course.pk %}">{{course}}</a>
+							</td>
 							<td>
 								<input type="button" value="Sign in">
 								<input type="button" value="Manage">
