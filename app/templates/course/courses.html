@@ -4,6 +4,8 @@
 	Courses
 {% endblock %}
 
+
+
 {% block content %}
 	<div id="top-bar"></div>
 	<div id="container">
@@ -30,8 +32,8 @@
 							<td>
 								<input type="button" value="Sign in">
 								<input type="button" value="Manage">
-								<input type="button" value="Edit">
-							</td>	
+								<input type="button" value="Edit" onclick="location.href='{% url 'edit-course' id=course.pk %}'"></input>
+							</td>
 						</tr>
 					{% endfor %}
 				{% endif %}
