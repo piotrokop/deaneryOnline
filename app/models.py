@@ -35,6 +35,7 @@ class UserRole(models.Model):
 #Profile and default User model are related as one to one
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	courses = models.ManyToManyField(Course, through='UserCourse')
 	role_id = models.ForeignKey(UserRole, on_delete=models.CASCADE, null=True)
 	semester = models.IntegerField(null=True)
 
@@ -46,6 +47,11 @@ class Profile(models.Model):
 	@receiver(post_save, sender=User)
 	def save_user_profile(sender, instance, **kwargs):
 		instance.profile.save()
+		
+class UserCourse(models.Model):
+	user = models.ForeignKey(Profile)
+	course = models.ForeignKey(Course)
+	accepted = models.BooleanField()
 
 
 #Method injection to User class

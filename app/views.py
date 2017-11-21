@@ -5,10 +5,11 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import Course
+from app.models import Course, UserCourse
 from app.forms import CourseForm
 from app.models import UserRole
 from django.contrib.auth.models import User
+from app.helper import Values, DBHelper
 
 # Create your views here.
 def create_course(request):
@@ -99,10 +100,11 @@ def edit_course(request, id):
 
 def courses(request):
 	if request.user.is_authenticated():
-		user_id = User.objects.get(pk=request.user.id).pk
-		user_role = UserRole.objects.get(pk=user_id).pk
+		user_role = DBHelper.get_user_role(request)
 		courses = Course.objects.all()
-		return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses})
+		user_courses = DBHelper.get_user(request).courses.all()
+		
+		return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses, "user_courses" : user_courses })
 		
 def course_details(request, id):
 	course = Course.objects.get(course_id = id)
@@ -125,7 +127,26 @@ def course_details(request, id):
 	'seminars': seminars}
 	
 	return render(request, 'course/course-details.html', {"course_details" : details})
+	
+def course_signup(request, id):
+	course = Course.objects.get(course_id = id)
+	user_role = DBHelper.get_user_role(request)
+	user = DBHelper.get_user(request)
+	if(not user.courses.filter(pk=id).exists()):
+		if(user_role == Values.USER_ROLE_STUDENT or user_role == Values.USER_ROLE_ACADEMIC):
+			user_course = UserCourse(user = user, course = course, accepted = 0)
+			user_course.save()			
+	return courses(request)
 
+def course_signout(request, id):
+	course = Course.objects.get(course_id = id)
+	user_role = DBHelper.get_user_role(request)
+	user = DBHelper.get_user(request)
+	user_course = UserCourse.objects.get(user = user, course = course)
+	if(user_course is not None and user_course.accepted == 0):
+		user_course.delete()			
+	return courses(request)	
+	
 @login_required()
 def createview(request):
 	return render(request, 'main.html')

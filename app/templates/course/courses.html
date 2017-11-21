@@ -16,31 +16,30 @@
 					<th>Course name</th>
 					<th>Actions</th>
 				</tr>
-				{% if role == 1 %}
-					{% for course in all_courses %}
-						<tr>
+				{% for course in all_courses %}
+					<tr>
 							<td>
-								<a href="{% url 'course-details' id=course.pk %}">{{course}}</a>
+									<a href="{% url 'course-details' id=course.pk %}">{{course}}</a>
 							</td>
 							<td>
-								<input type="button" value="Sign in">
-							</td>	
-						</tr>
-					{% endfor %}
-				{% elif role == 2 or role == 3 %}
-					{% for course in all_courses %}
-						<tr>
-							<td>
-								<a href="{% url 'course-details' id=course.pk %}">{{course}}</a>
-							</td>
-							<td>
-								<input type="button" value="Sign in">
+								{% if role == 1 or role == 2 %}
+									{% if course in user_courses %}
+										<input type="button" value="Sign out" onclick="location.href='{% url 'course-signout' id=course.pk %}'">
+									{% else %}
+										<input type="button" value="Sign in" onclick="location.href='{% url 'course-signup' id=course.pk %}'"/>
+									{% endif %}
+								{% endif %}
+					{% if role == 1 %}
+				
+					{% elif role == 2 or role == 3 %}
+							
 								<input type="button" value="Manage">
 								<input type="button" value="Edit" onclick="location.href='{% url 'edit-course' id=course.pk %}'"></input>
 							</td>
-						</tr>
-					{% endfor %}
-				{% endif %}
+					{% endif %}
+					</td>
+					</tr>
+				{% endfor %}
 			</table>
 		</div>
 	</div>
