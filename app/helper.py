@@ -11,6 +11,10 @@ class DBHelper:
 	@staticmethod
 	def get_user(request):
 		return Profile.objects.get(pk=request.user.id)
+		
+	@staticmethod
+	def get_user_by_id(id):
+		return Profile.objects.get(pk=id)
 	
 	@staticmethod
 	def get_user_role(request):

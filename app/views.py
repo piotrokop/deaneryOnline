@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import Course, UserCourse
 from app.forms import CourseForm
-from app.models import UserRole
+from app.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
 
@@ -101,10 +101,11 @@ def edit_course(request, id):
 def courses(request):
 	if request.user.is_authenticated():
 		user_role = DBHelper.get_user_role(request)
-		courses = Course.objects.all()
-		user_courses = DBHelper.get_user(request).courses.all()
+		user = DBHelper.get_user(request)
+		user_courses = UserCourse.objects.filter(profile = user)
+		rest_courses = Course.objects.exclude(course_id__in = [c.course_id for c in user_courses])
 		
-		return render(request, 'course/courses.html', {"role" : user_role, "all_courses" : courses, "user_courses" : user_courses })
+		return render(request, 'course/courses.html', {"role" : user_role, "rest_courses" : rest_courses, "user_courses" : user_courses })
 		
 def course_details(request, id):
 	course = Course.objects.get(course_id = id)
@@ -134,7 +135,7 @@ def course_signup(request, id):
 	user = DBHelper.get_user(request)
 	if(not user.courses.filter(pk=id).exists()):
 		if(user_role == Values.USER_ROLE_STUDENT or user_role == Values.USER_ROLE_ACADEMIC):
-			user_course = UserCourse(user = user, course = course, accepted = 0)
+			user_course = UserCourse(profile = user, course = course, accepted = 0)
 			user_course.save()			
 	return courses(request)
 
@@ -142,10 +143,43 @@ def course_signout(request, id):
 	course = Course.objects.get(course_id = id)
 	user_role = DBHelper.get_user_role(request)
 	user = DBHelper.get_user(request)
-	user_course = UserCourse.objects.get(user = user, course = course)
+	user_course = UserCourse.objects.get(profile = user, course = course)
 	if(user_course is not None and user_course.accepted == 0):
 		user_course.delete()			
 	return courses(request)	
+	
+def course_manage(request, id):
+	course = Course.objects.get(course_id = id)
+	user_role = DBHelper.get_user_role(request)
+	if(user_role == Values.USER_ROLE_DEAN):
+		users = Profile.objects.filter(courses__course_id = id)
+		user_courses = UserCourse.objects.filter(course = course)
+		return render(request, 'course/course-manage.html', {"course" : course, "user_courses": user_courses})
+	else:
+		return courses(request)	
+		
+def course_manage_approve(request, course_id, user_id):
+	course = Course.objects.get(course_id = course_id)
+	user_role = DBHelper.get_user_role(request)
+	if(user_role == Values.USER_ROLE_DEAN):
+		profile = DBHelper.get_user_by_id(user_id)
+		user_course = UserCourse.objects.get(profile = profile, course = course)
+		user_course.accepted = 1
+		user_course.save()
+		return course_manage(request, course_id)
+	else:
+		return courses(request)		
+
+def course_manage_kick(request, course_id, user_id):
+	course = Course.objects.get(course_id = course_id)
+	user_role = DBHelper.get_user_role(request)
+	if(user_role == Values.USER_ROLE_DEAN):
+		profile = DBHelper.get_user_by_id(user_id)
+		user_course = UserCourse.objects.get(profile = profile, course = course)
+		user_course.delete()
+		return course_manage(request, course_id)
+	else:
+		return courses(request)			
 	
 @login_required()
 def createview(request):

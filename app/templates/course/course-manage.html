@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block branding %}
+	Manage course
+{% endblock %}
+
+
+
+{% block content %}
+	<div id="top-bar"></div>
+	<div id="container">
+		<div id="container-title">{{ course.name }}</div>
+		<div id="container-content">
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Actions</th>
+				</tr>
+				{% for user_course in user_courses %}
+					<tr>
+						<td>
+								{{user_course.profile.user.first_name}} {{user_course.profile.user.last_name}}({{user_course.profile.role_id}})
+		
+						</td>
+						<td>
+							{% if user_course.accepted == 0 %}
+								<input type="button" value="Approve" onclick="location.href='{% url 'course-manage-approve' course_id=course.pk user_id=user_course.profile.id %}'">
+							{% endif %}
+								<input type="button" value="Kick" onclick="location.href='{% url 'course-manage-kick' course_id=course.pk user_id=user_course.profile.id %}'">
+					</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}

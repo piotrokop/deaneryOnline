@@ -36,7 +36,7 @@ class UserRole(models.Model):
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	courses = models.ManyToManyField(Course, through='UserCourse')
-	role_id = models.ForeignKey(UserRole, on_delete=models.CASCADE, null=True)
+	role_id = models.ForeignKey(UserRole, on_delete=models.CASCADE, null=True, related_name='role')
 	semester = models.IntegerField(null=True)
 
 	@receiver(post_save, sender=User)
@@ -49,9 +49,12 @@ class Profile(models.Model):
 		instance.profile.save()
 		
 class UserCourse(models.Model):
-	user = models.ForeignKey(Profile)
+	profile = models.ForeignKey(Profile)
 	course = models.ForeignKey(Course)
 	accepted = models.BooleanField()
+	
+	class Meta:
+		unique_together = ('profile', 'course',) #user can belong to course only once
 
 
 #Method injection to User class
