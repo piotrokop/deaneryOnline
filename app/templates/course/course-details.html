@@ -5,28 +5,50 @@
 {% endblock %}
 
 {% block content %}
-		<div id="top-bar">
-		</div>
-		<div id="container">
-			<div id="container-title">Course details</div>
-			<div id="container-content">
-				{% csrf_token %}
-				<table  width = "100%" >
-				<tr><td align = "center" >Name</td><td align = "center" >{{course_details.name}}</td></tr>
-				<tr><td width = "40%"  align = "center" >Description</td><td align = "center" >{{course_details.description}}</td></tr>
-				</table>
-				
-				<table  width = "100%" >
-				<tr><td align = "center" >ECTS</td><td width = "85%"  align = "center" >{{course_details.name}}</td></tr>
-				<tr><td width = "40%" align = "center" >Exercises</td><td align = "center" >{{course_details.exercises}}</td></tr>
-				<tr><td align = "center" >Laboratories</td><td align = "center" >{{course_details.laboratories}}</td></tr>
-				<tr><td align = "center" >Project</td><td align = "center" >{{course_details.project}}</td></tr>
-				<tr><td align = "center" >Seminars</td><td align = "center" >{{course_details.seminars}}</td></tr>
-				<tr><td align = "center" >Exam</td><td>{{course_details.exam}}</td></tr>
-				</table>
-				<br/>
-				<input type="button" value="Back" onclick="location.href='{% url 'courses' %}'"></input>
+	<div id="top-bar"></div>
+	<div id="container">
+		<div id="container-title">Course details</div>
+		<div id="container-content">
+			{% csrf_token %}
+			<table  width = "100%" >
+				<tr>
+					<td align = "center" >Name</td>
+					<td align = "center" >{{course_details.name}}</td>
+				</tr>
+				<tr>
+					<td width = "40%"  align = "center" >Description</td>
+					<td align = "center" >{{course_details.description}}</td>
+				</tr>
+			</table>
 			
-			</div>
+			<table  width = "100%" >
+				<tr>
+					<td align = "center" >ECTS</td>
+					<td width = "85%"  align = "center" >{{course_details.name}}</td>
+				</tr>
+				<tr>
+					<td width = "40%" align = "center" >Exercises</td>
+					<td align = "center" >{{course_details.exercises}}</td>
+				</tr>
+				<tr>
+					<td align = "center" >Laboratories</td>
+					<td align = "center" >{{course_details.laboratories}}</td>
+				</tr>
+				<tr>
+					<td align = "center" >Project</td>
+					<td align = "center" >{{course_details.project}}</td>
+				</tr>
+				<tr>
+					<td align = "center" >Seminars</td>
+					<td align = "center" >{{course_details.seminars}}</td>
+				</tr>
+				<tr>
+					<td align = "center" >Exam</td>
+					<td>{{course_details.exam}}</td>
+				</tr>
+			</table>
+			<br/>
+			<input type="button" value="Back" onclick="location.href='{% url 'courses' %}'"></input>
 		</div>
+	</div>
 {% endblock %}
