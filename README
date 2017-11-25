@@ -31,7 +31,8 @@ python manage.py loaddata app/static/data/initial_users.json
 python manage.py loaddata app/static/data/initial_profiles.json
 python manage.py loaddata app/static/data/initial_courses.json
 
-hasło do user
+hasło do userów:
+test1234
 
 5. DUMPING DATA FOR USERS TABLE:
 after creating users manually
