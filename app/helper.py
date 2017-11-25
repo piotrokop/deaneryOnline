@@ -7,7 +7,7 @@ class Values:
     USER_ROLE_ACADEMIC = 2
     USER_ROLE_DEAN = 3
 
-clas:
+class DBHelper:
     @staticmethod
     def get_user(request):
         return Profile.objects.get(pk=request.user.id)
