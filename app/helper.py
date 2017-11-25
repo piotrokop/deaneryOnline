@@ -19,6 +19,7 @@ class DBHelper:
     @staticmethod
     def get_user_role(request):
         user_id = User.objects.get(pk=request.user.id).pk
-        user_role = UserRole.objects.get(pk=user_id).pk
+        user_role = User.objects.get(pk=request.user.profile.role_id_id).pk
+        #user_role = UserRole.objects.get(pk=user_role).pk
         return user_role
         
