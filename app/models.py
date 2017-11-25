@@ -36,7 +36,7 @@ class UserRole(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courses = models.ManyToManyField(Course, through='UserCourse')
-    role_id = models.ForeignKey(UserRole, on_delete=models.CASCADE, default=1)
+    role = models.ForeignKey(UserRole, on_delete=models.CASCADE, default=1)
     semester = models.IntegerField(null=True)
 
 @receiver(post_save, sender=User)

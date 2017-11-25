@@ -26,9 +26,8 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField(max_length=254)
-    role_id = forms.ChoiceField(choices=ROLE_CHOICES)
-    role_id.label="Role"
+    role = forms.ChoiceField(choices=ROLE_CHOICES)
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'role_id', 'password1', 'password2', )
+        fields = ('username', 'first_name', 'last_name', 'email', 'role', 'password1', 'password2', )
