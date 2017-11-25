@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import Course, UserCourse
-from app.forms import CourseForm
+from app.forms import CourseForm, SignUpForm
 from app.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
@@ -192,3 +192,21 @@ def course_manage_kick(request, course_id, user_id):
 @login_required()
 def createview(request):
     return render(request, 'main.html')
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.role_id = UserRole.objects.get(id=form.cleaned_data.get('role_id'))
+            user.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('/accounts/login/')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})

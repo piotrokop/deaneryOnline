@@ -36,17 +36,15 @@ class UserRole(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courses = models.ManyToManyField(Course, through='UserCourse')
-    role_id = models.ForeignKey(UserRole, on_delete=models.CASCADE, null=True, related_name='role')
+    role_id = role_id = models.ForeignKey(UserRole, on_delete=models.CASCADE)
     semester = models.IntegerField(null=True)
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
 
 class UserCourse(models.Model):
     profile = models.ForeignKey(Profile)
@@ -54,11 +52,5 @@ class UserCourse(models.Model):
     accepted = models.BooleanField()
 
     class Meta:
-        unique_together = ('profile', 'course',) #user can belong to course only once
+        unique_together = ('profile', 'course',)
 
-
-#Method injection to User class
-def get_full_name(self):
-    return '%s %s' % (self.last_name, self.first_name)
-
-User.add_to_class("__str__", get_full_name)

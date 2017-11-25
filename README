@@ -10,19 +10,11 @@ USE:
 http://127.0.0.1:8000/accounts/login/
 
 
-2. EXAMPLE OF PROSPECTIVE EDITING USER/PROFILE:
-
-def update_profile(request, user_id):
-    user = User.objects.get(pk=user_id)
-    user.profile.semester = 7
-    user.save()
-
-
-3. CLEAN DATABASE:
+2. CLEAN DATABASE:
 python manage.py flush
 
 
-4. ENTIRE FLOW TO PREPARE SAMPLE DATABASE:
+3. ENTIRE FLOW TO PREPARE SAMPLE DATABASE:
 python manage.py makemigrations
 python manage.py migrate
 
@@ -34,6 +26,6 @@ python manage.py loaddata app/static/data/initial_courses.json
 hasło do userów:
 test1234
 
-5. DUMPING DATA FOR USERS TABLE:
+4. DUMPING DATA FOR USERS TABLE:
 after creating users manually
 ./manage.py dumpdata auth.user --indent 2 > user.json

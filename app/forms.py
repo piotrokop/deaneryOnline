@@ -1,5 +1,6 @@
 from django import forms
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import Course
 
 class CourseForm(forms.ModelForm):
@@ -15,3 +16,19 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = ('name', 'description', 'ects')
+
+
+class SignUpForm(UserCreationForm):
+    ROLE_CHOICES = (
+        (1, 'Student'),
+        (2, 'Academic'),
+    )
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    email = forms.EmailField(max_length=254)
+    role_id = forms.ChoiceField(choices=ROLE_CHOICES)
+    role_id.label="Role"
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'role_id', 'password1', 'password2', )
