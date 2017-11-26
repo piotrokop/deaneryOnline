@@ -192,6 +192,15 @@ def course_approvals_kick(request, course_id, user_id):
 @login_required()
 def createview(request):
     return render(request, 'main.html')
+	
+	
+def course_manage(request, id):
+	course = Course.objects.get(course_id = id)
+	user_courses = UserCourse.objects.filter(course=course, accepted=1)
+	return render(request, 'course/course-manage.html', {
+			"course": course,
+            "user_courses": user_courses
+        })
 
 
 def signup(request):
