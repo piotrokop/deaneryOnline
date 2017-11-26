@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Course
+from .models import UserGrade
 
 class CourseForm(forms.ModelForm):
     if_exer = forms.BooleanField(required=False, label='if_exer')
@@ -31,3 +32,24 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'role', 'password1', 'password2', )
+		
+class ManageCourseForm(forms.ModelForm):
+	GRADE_CHOICES = (
+		(2.0, '2.0'),
+		(3.0, '3.0'),
+		(3.5, '3.5'),
+		(4.0, '4.0'),
+		(4.5, '4.5'),
+		(5.0, '5.0'),
+		(None, 'None'),
+	)
+	exercises = forms.ChoiceField(choices=GRADE_CHOICES)
+	laboratory = forms.ChoiceField(choices=GRADE_CHOICES)
+	project = forms.ChoiceField(choices=GRADE_CHOICES)
+	seminar = forms.ChoiceField(choices=GRADE_CHOICES)
+	exam = forms.ChoiceField(choices=GRADE_CHOICES)
+	final_grade = forms.ChoiceField(choices=GRADE_CHOICES)
+	
+	class Meta:
+		model = UserGrade
+		fields = ('exercises', 'laboratory', 'project', 'seminar', 'exam', 'final_grade', )

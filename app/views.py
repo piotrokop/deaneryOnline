@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import Course, UserCourse
-from app.forms import CourseForm, SignUpForm
+from app.forms import CourseForm, SignUpForm, ManageCourseForm
 from app.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
@@ -197,25 +197,38 @@ def createview(request):
 def course_manage(request, id):
 	course = Course.objects.get(course_id = id)
 	user_courses = UserCourse.objects.filter(course=course, accepted=1)
-	return render(request, 'course/course-manage.html', {
-			"course": course,
-            "user_courses": user_courses
-        })
+	
+	if request.method == 'POST':
+		form = ManageCourseForm(request.POST)
+		if form.is_valid():
+			usergrade = form.save(commit=False)
+			if request.POST.get('exercises') != None:
+				usergrade.grade = request.POST.get('exercises')
+				usergrade.is_final = False
+				usergrade.course_id = id
+				usergrade.category = 'exercises'
+				usergrade.professor_user_id = request.user.id
+				usergrade.student_user_id = user_courses[0].id
+				usergrade.save()
+			return redirect('courses')
+	else:
+		form = ManageCourseForm()
+	return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "form": form,})
 
 
 def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()
-            user.profile.role = UserRole.objects.get(id=form.cleaned_data.get('role'))
-            user.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('/accounts/login/')
-    else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+	if request.method == 'POST':
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			user.refresh_from_db()
+			user.profile.role = UserRole.objects.get(id=form.cleaned_data.get('role'))
+			user.save()
+			username = form.cleaned_data.get('username')
+			raw_password = form.cleaned_data.get('password1')
+			user = authenticate(username=user.username, password=raw_password)
+			login(request, user)
+			return redirect('/accounts/login/')
+	else:
+		form = SignUpForm()
+	return render(request, 'signup.html', {'form': form})
