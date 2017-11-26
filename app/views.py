@@ -5,11 +5,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import Course, UserCourse
+from app.models import Course, UserCourse, UserGrade
 from app.forms import CourseForm, SignUpForm
 from app.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
+from sets import Set
 
 # Create your views here.
 def create_course(request):
@@ -17,7 +18,7 @@ def create_course(request):
         form = CourseForm(request.POST)
         course = form.save(commit=False)
         if request.POST.get('if_exer'):
-            course.exercises = request.POST.get['exercises']
+            course.exercises = request.POST.get('exercises')
         else:
             course.exercises = 0
         if request.POST.get('if_lab'):
@@ -37,7 +38,7 @@ def create_course(request):
         else:
             course.exam = 0
         course.save()
-        return render(request, 'course/courses.html')
+        return redirect(courses);
     else:
         form = CourseForm()
     return render(request, 'course/create-course.html', {"form" : form})
@@ -73,7 +74,7 @@ def edit_course(request, id):
         if form.is_valid():
             course = form.save(commit=False)
             if request.POST.get('if_exer'):
-                course.exercises = request.POST.get['exercises']
+                course.exercises = request.POST.get('exercises')
             else:
                 course.exercises = 0
             if request.POST.get('if_lab'):
@@ -111,7 +112,27 @@ def courses(request):
             "rest_courses" : rest_courses,
             "user_courses" : user_courses
         })
-
+		
+def grades(request):
+	if request.user.is_authenticated():
+		user = DBHelper.get_user(request)
+		grades = UserGrade.objects.filter(student_user=user)
+		course_set = Set()
+		courses = []
+		grade_set = (grade for grade in grades )
+		for grade in grade_set:
+			course_set.add(grade.course)
+		for c in course_set:
+			course = Course.objects.get(course_id=c)
+			courses.append({'Name' : course.name ,'Id' : course.course_id , 'ECTS' : course.ects})
+		for grade in grade_set:
+			course = (c for c in courses if c['Id'] == grade.course)
+			for c in course:
+				c[grade.category]=grade.grade
+		return render(request, 'course/grades.html', {
+            "gradeList" : courses
+        })
+		
 def course_details(request, id):
     course = Course.objects.get(course_id=id)
     name = course.name

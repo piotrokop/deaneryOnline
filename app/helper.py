@@ -21,4 +21,3 @@ class DBHelper:
         user_id = User.objects.get(pk=request.user.id).pk
         user_role = User.objects.get(pk=request.user.profile.role_id).pk
         return user_role
-        
