@@ -154,19 +154,19 @@ def course_signout(request, id):
         user_course.delete()
     return courses(request)
 
-def course_manage(request, id):
+def course_approvals(request, id):
     course = Course.objects.get(course_id=id)
     user_role = DBHelper.get_user_role(request)
     if user_role == Values.USER_ROLE_DEAN:
         user_courses = UserCourse.objects.filter(course=course)
-        return render(request, 'course/course-manage.html', {
+        return render(request, 'course/course-approvals.html', {
             "course" : course,
             "user_courses": user_courses
         })
     else:
         return courses(request)
 
-def course_manage_approve(request, course_id, user_id):
+def course_approvals_approve(request, course_id, user_id):
     course = Course.objects.get(course_id=course_id)
     user_role = DBHelper.get_user_role(request)
     if user_role == Values.USER_ROLE_DEAN:
@@ -174,18 +174,18 @@ def course_manage_approve(request, course_id, user_id):
         user_course = UserCourse.objects.get(profile=profile, course=course)
         user_course.accepted = 1
         user_course.save()
-        return course_manage(request, course_id)
+        return course_approvals(request, course_id)
     else:
         return courses(request)
 
-def course_manage_kick(request, course_id, user_id):
+def course_approvals_kick(request, course_id, user_id):
     course = Course.objects.get(course_id=course_id)
     user_role = DBHelper.get_user_role(request)
     if user_role == Values.USER_ROLE_DEAN:
         profile = DBHelper.get_user_by_id(user_id)
         user_course = UserCourse.objects.get(profile=profile, course=course)
         user_course.delete()
-        return course_manage(request, course_id)
+        return course_approvals(request, course_id)
     else:
         return courses(request)
 

@@ -16,7 +16,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 #from app import views
-from app.views import createview, courses, create_course, edit_course, course_details, course_signup, course_signout, course_manage, course_manage_approve, course_manage_kick, signup
+from app.views import createview, courses, create_course, edit_course, course_details, course_signup, course_signout, course_approvals, course_approvals_approve, course_approvals_kick, signup
 
 urlpatterns = [
     url(r'^login/', auth_views.login, name='login'),
@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^course-details/(?P<id>[0-9]+)/', course_details, name='course-details'),
     url(r'^course/signup/(?P<id>[0-9]+)/', course_signup, name='course-signup'),
     url(r'^course/signout/(?P<id>[0-9]+)/', course_signout, name='course-signout'),
-    url(r'^course/manage/(?P<id>[0-9]+)/', course_manage, name='course-manage'),
-    url(r'^course/manage/approve/(?P<course_id>[0-9]+)/(?P<user_id>[0-9]+)', course_manage_approve, name='course-manage-approve'),
-    url(r'^course/manage/kick/(?P<course_id>[0-9]+)/(?P<user_id>[0-9]+)', course_manage_kick, name='course-manage-kick'),
+    url(r'^course/approvals/(?P<id>[0-9]+)/', course_approvals, name='course-approvals'),
+    url(r'^course/approvals/approve/(?P<course_id>[0-9]+)/(?P<user_id>[0-9]+)', course_approvals_approve, name='course-approvals-approve'),
+    url(r'^course/approvals/kick/(?P<course_id>[0-9]+)/(?P<user_id>[0-9]+)', course_approvals_kick, name='course-approvals-kick'),
 ]

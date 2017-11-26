@@ -25,10 +25,8 @@
 							{% endif %}
 						</td>
 						<td>
-							{% if role == 1 or role == 2 %}
-								{% if user_course.accepted == 0 %}
-									<input type="button" value="Sign out" onclick="location.href='{% url 'course-signout' id=user_course.course.pk %}'"></input>
-								{% endif %}
+							{% if user_course.accepted == 0 %}
+								<input type="button" value="Sign out" onclick="location.href='{% url 'course-signout' id=user_course.course.pk %}'"></input>
 							{% endif %}
 						</td>
 					</tr>
@@ -40,13 +38,16 @@
 							<a href="{% url 'course-details' id=course.pk %}">{{course}}</a>
 						</td>
 						<td>
-							{% if role == 1 or role == 2 %}
-								<input type="button" value="Sign in" onclick="location.href='{% url 'course-signup' id=course.pk %}'"/></input>
-							{% endif %}
-							{% if role == 3 %}
-								<input type="button" value="Manage" onclick="location.href='{% url 'course-manage' id=course.pk %}'"></input>
+							<input type="button" value="Sign in" onclick="location.href='{% url 'course-signup' id=course.pk %}'"/></input>
+							{% if role == 2 or role == 3 %}
+								
 								<input type="button" value="Edit" onclick="location.href='{% url 'edit-course' id=course.pk %}'"></input>
 							{% endif %}
+							{% if role == 3 %}
+								<input type="button" value="Approvals" onclick="location.href='{% url 'course-approvals' id=course.pk %}'"></input>
+							{% endif %}
+							
+
 						</td>
 					</tr>
 				{% endfor %}
