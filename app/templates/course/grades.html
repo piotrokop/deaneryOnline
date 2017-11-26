@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block branding %}
+	Courses
+{% endblock %}
+
+{% block content %}
+	<div id="top-bar"></div>
+	<div id="container">
+		<div id="container-title">Grades</div>
+		<div id="container-content">
+			<table>
+				<tr>
+					<th>Subject</th>
+					<th>Exercises</th>
+					<th>Laboratory</th>
+					<th>Project</th>
+					<th>Seminar</th>
+					<th>Exam</th>
+					<th>Final grade</th>
+					<th>ECTS</th>
+				</tr>
+			
+				{% for course in gradeList %}
+					<tr>
+						<td>
+							{{course.Name}}
+						</td>
+						<td>
+							{{course.exercises}}
+						</td>
+						<td>
+							{{course.laboratories}}
+						</td>
+						<td>
+							{{course.project}}
+						</td>
+						<td>
+							{{course.seminars}}
+						</td>
+						<td>
+							{{course.exam}}
+						</td>
+						<td>
+							{{course.finalgrade}}
+						</td>
+						<td>
+							{{course.ECTS}}
+						</td>
+							
+					</tr>
+				{% endfor %}
+				
+				
+			</table>
+		</div>
+	</div>
+{% endblock %}
