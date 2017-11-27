@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.forms import formset_factory
+from django.forms import formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -219,10 +220,12 @@ def course_manage(request, id):
     course = Course.objects.get(course_id = id)
     user_courses = UserCourse.objects.filter(course=course, accepted=1)
     ManageCourseFormSet = formset_factory(ManageCourseForm)
+    czy=0
     if request.method == 'POST':
-        formset = ManageCourseFormSet(request.POST, request.FILES)
+        formset = ManageCourseFormSet(request.POST)
         if formset.is_valid():
             user_index = 0
+            czy=1
             for form in formset:
                 usergrade = form.save(commit=False)
                 if request.POST.get('exercises') != None:
@@ -240,7 +243,7 @@ def course_manage(request, id):
                     usergrade.category = 'laboratory'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()
+                    usergrade.save(commit=True)
                 if request.POST.get('project') != None:
                     usergrade.grade = request.POST.get('project')
                     usergrade.is_final = False
@@ -274,11 +277,15 @@ def course_manage(request, id):
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
                 user_index += 1
-            return redirect('courses')
+        else:
+			errors = formset.errors
+			with open('logfile.txt', 'w') as file:
+				file.write(errors)
+        return redirect('courses')
     else:
         ManageCourseFormSet = formset_factory(ManageCourseForm)
         formset = ManageCourseFormSet()
-    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset, "isvalid": czy,})
+    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset,"isvalid": czy})
 
 
 def signup(request):

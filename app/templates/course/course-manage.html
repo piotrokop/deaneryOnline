@@ -35,7 +35,7 @@
 							<td style="border-right: 1px solid #e5e6e9;">
 								{{user_course.profile.user.first_name}} {{user_course.profile.user.last_name}}
 							</td>
-							{% for form in formset.forms %}
+							{% for form in formset %}
 								{% if course.exercises != 0 %}
 									<td style="border-right: 1px solid #e5e6e9;">
 										{{form.exercises}}
