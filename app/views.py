@@ -219,12 +219,15 @@ def course_manage(request, id):
     course = Course.objects.get(course_id = id)
     user_courses = UserCourse.objects.filter(course=course, accepted=1)
     ManageCourseFormSet = formset_factory(ManageCourseForm)
+    isvalid = ' '
     if request.method == 'POST':
         formset = ManageCourseFormSet(request.POST, request.FILES)
         if formset.is_valid():
             user_index = 0
             for form in formset:
                 usergrade = form.save(commit=False)
+                data = form.cleaned_data
+                isvalid = str(isvalid) + str('  ,  ') + data.get('project')
                 if request.POST.get('exercises') != None:
                     usergrade.grade = request.POST.get('exercises')
                     usergrade.is_final = False
@@ -232,7 +235,7 @@ def course_manage(request, id):
                     usergrade.category = 'exercises'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()
+                    usergrade.save()					
                 if request.POST.get('laboratory') != None:
                     usergrade.grade = request.POST.get('laboratory')
                     usergrade.is_final = False
@@ -249,6 +252,7 @@ def course_manage(request, id):
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
+                    isvalid = isvalid + 1
                 if request.POST.get('seminar') != None:
                     usergrade.grade = request.POST.get('seminar')
                     usergrade.is_final = False
@@ -274,11 +278,11 @@ def course_manage(request, id):
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
                 user_index += 1
-            return redirect('courses')
-    else:
-        ManageCourseFormSet = formset_factory(ManageCourseForm)
-        formset = ManageCourseFormSet()
-    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset, "isvalid": czy,})
+            #return redirect('courses')
+    
+    ManageCourseFormSet = formset_factory(ManageCourseForm, extra = 2)
+    formset = ManageCourseFormSet()
+    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset, "isvalid": isvalid,})
 
 
 def signup(request):
