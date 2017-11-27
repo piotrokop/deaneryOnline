@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.forms import formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -216,25 +216,69 @@ def createview(request):
 	
 	
 def course_manage(request, id):
-	course = Course.objects.get(course_id = id)
-	user_courses = UserCourse.objects.filter(course=course, accepted=1)
-	
-	if request.method == 'POST':
-		form = ManageCourseForm(request.POST)
-		if form.is_valid():
-			usergrade = form.save(commit=False)
-			if request.POST.get('exercises') != None:
-				usergrade.grade = request.POST.get('exercises')
-				usergrade.is_final = False
-				usergrade.course_id = id
-				usergrade.category = 'exercises'
-				usergrade.professor_user_id = request.user.id
-				usergrade.student_user_id = user_courses[0].id
-				usergrade.save()
-			return redirect('courses')
-	else:
-		form = ManageCourseForm()
-	return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "form": form,})
+    course = Course.objects.get(course_id = id)
+    user_courses = UserCourse.objects.filter(course=course, accepted=1)
+    ManageCourseFormSet = formset_factory(ManageCourseForm)
+    if request.method == 'POST':
+        formset = ManageCourseFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            user_index = 0
+            for form in formset:
+                usergrade = form.save(commit=False)
+                if request.POST.get('exercises') != None:
+                    usergrade.grade = request.POST.get('exercises')
+                    usergrade.is_final = False
+                    usergrade.course_id = id
+                    usergrade.category = 'exercises'
+                    usergrade.professor_user_id = request.user.id
+                    usergrade.student_user_id = user_courses[user_index].profile.user_id
+                    usergrade.save()
+                if request.POST.get('laboratory') != None:
+                    usergrade.grade = request.POST.get('laboratory')
+                    usergrade.is_final = False
+                    usergrade.course_id = id
+                    usergrade.category = 'laboratory'
+                    usergrade.professor_user_id = request.user.id
+                    usergrade.student_user_id = user_courses[user_index].profile.user_id
+                    usergrade.save()
+                if request.POST.get('project') != None:
+                    usergrade.grade = request.POST.get('project')
+                    usergrade.is_final = False
+                    usergrade.course_id = id
+                    usergrade.category = 'project'
+                    usergrade.professor_user_id = request.user.id
+                    usergrade.student_user_id = user_courses[user_index].profile.user_id
+                    usergrade.save()
+                if request.POST.get('seminar') != None:
+                    usergrade.grade = request.POST.get('seminar')
+                    usergrade.is_final = False
+                    usergrade.course_id = id
+                    usergrade.category = 'seminar'
+                    usergrade.professor_user_id = request.user.id
+                    usergrade.student_user_id = user_courses[user_index].profile.user_id
+                    usergrade.save()
+                if request.POST.get('exam') != None:
+                    usergrade.grade = request.POST.get('exam')
+                    usergrade.is_final = False
+                    usergrade.course_id = id
+                    usergrade.category = 'exam'
+                    usergrade.professor_user_id = request.user.id
+                    usergrade.student_user_id = user_courses[user_index].profile.user_id
+                    usergrade.save()
+                if request.POST.get('final_grade') != None:
+                    usergrade.grade = request.POST.get('final_grade')
+                    usergrade.is_final = False
+                    usergrade.course_id = id
+                    usergrade.category = 'finalgrade'
+                    usergrade.professor_user_id = request.user.id
+                    usergrade.student_user_id = user_courses[user_index].profile.user_id
+                    usergrade.save()
+                user_index += 1
+            return redirect('courses')
+    else:
+        ManageCourseFormSet = formset_factory(ManageCourseForm)
+        formset = ManageCourseFormSet()
+    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset, "isvalid": czy,})
 
 
 def signup(request):

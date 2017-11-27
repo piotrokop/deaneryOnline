@@ -43,12 +43,12 @@ class ManageCourseForm(forms.ModelForm):
 		(5.0, '5.0'),
 		(None, 'None'),
 	)
-	exercises = forms.ChoiceField(choices=GRADE_CHOICES)
-	laboratory = forms.ChoiceField(choices=GRADE_CHOICES)
-	project = forms.ChoiceField(choices=GRADE_CHOICES)
-	seminar = forms.ChoiceField(choices=GRADE_CHOICES)
-	exam = forms.ChoiceField(choices=GRADE_CHOICES)
-	final_grade = forms.ChoiceField(choices=GRADE_CHOICES)
+	exercises = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
+	laboratory = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
+	project = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
+	seminar = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
+	exam = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
+	final_grade = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
 	
 	class Meta:
 		model = UserGrade

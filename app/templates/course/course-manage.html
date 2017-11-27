@@ -9,8 +9,17 @@
 	<div id="container">
 		<div id="container-title">{{ course.name }}</div>
 		<div id="container-content">
+			<p>{{isvalid}}</p>
+			<script>
+				function check()
+				{
+					aaa = {{isvalid}}
+					console.log(aaa)
+				}
+			</script>
 			<form method="post">
 				{% csrf_token %}
+				{{ formset.management_form }}
 				<table style="width: 80%; border: 1px solid #e5e6e9;margin-left: auto; margin-right: auto;">
 					<tr>
 						<th style = "border-right: 1px solid #e5e6e9; width: 15%; text-align: center;">Student name</th>
@@ -26,15 +35,66 @@
 							<td style="border-right: 1px solid #e5e6e9;">
 								{{user_course.profile.user.first_name}} {{user_course.profile.user.last_name}}
 							</td>
-							{% for field in form %}
+							{% for form in formset.forms %}
+								{% if course.exercises != 0 %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										{{form.exercises}}
+									</td>
+								{% else %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										---------
+									</td>
+								{% endif %}
+								
+								{% if course.laboratories != 0 %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										{{form.laboratory}}
+									</td>
+								{% else %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										---------
+									</td>
+								{% endif %}
+								
+								{% if course.project != 0 %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										{{form.project}}
+									</td>
+								{% else %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										---------
+									</td>
+								{% endif %}
+								
+								{% if course.seminars != 0 %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										{{form.seminar}}
+									</td>
+								{% else %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										{{form.seminar}}
+									</td>
+								{% endif %}
+								
+								{% if course.exam != 0 %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										{{form.exam}}
+									</td>
+								{% else %}
+									<td style="border-right: 1px solid #e5e6e9;">
+										---------
+									</td>
+								{% endif %}
+								
 								<td style="border-right: 1px solid #e5e6e9;">
-									{{field}}
+									{{form.final_grade}}
 								</td>
+								
 							{% endfor %}
 						</tr>
 					{% endfor %}
 				</table>
-				<button type="submit">Save</button>
+				<button type="submit" onclick="check();">Save</button>
 			</form>
 		</div>
 	</div>
