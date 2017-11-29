@@ -75,7 +75,7 @@ def edit_course(request, id):
 			if request.POST.get('del_btn'):
 				object = Course.objects.get(course_id=id)
 				object.delete()
-				return render(request, 'course/courses.html')
+				return redirect(courses)
 			else:
 				course = form.save(commit=False)
 				if request.POST.get('if_exer'):
@@ -99,7 +99,7 @@ def edit_course(request, id):
 				else:
 					course.exam = 0
 				course.save()
-				return render(request, 'course/courses.html')
+				return redirect(courses)
     else:
         form = CourseForm(instance=course, initial=init)
 
