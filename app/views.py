@@ -224,60 +224,58 @@ def createview(request):
 def course_manage(request, id):
     course = Course.objects.get(course_id = id)
     user_courses = UserCourse.objects.filter(course=course, accepted=1)
-    ManageCourseFormSet = formset_factory(ManageCourseForm)
-    isvalid = ' '
+    ManageCourseFormSet = formset_factory(ManageCourseForm, extra = user_courses.count())
+#    formset = ManageCourseFormSet(request.POST)
     if request.method == 'POST':
         formset = ManageCourseFormSet(request.POST)
         if formset.is_valid():
             user_index = 0
-            czy=1
             for form in formset:
                 usergrade = form.save(commit=False)
                 data = form.cleaned_data
-                isvalid = str(isvalid) + str('  ,  ') + str(data.get('project'))
-                if request.POST.get('exercises') != None:
-                    usergrade.grade = request.POST.get('exercises')
+                if data.get('exercises') != None:
+                    usergrade.grade = data.get('exercises')
                     usergrade.is_final = False
                     usergrade.course_id = id
                     usergrade.category = 'exercises'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()					
-                if request.POST.get('laboratory') != None:
-                    usergrade.grade = request.POST.get('laboratory')
+                if data.get('laboratory') != None:
+                    usergrade.grade = data.get('laboratory')
                     usergrade.is_final = False
                     usergrade.course_id = id
                     usergrade.category = 'laboratory'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save(commit=True)
-                if request.POST.get('project') != None:
-                    usergrade.grade = request.POST.get('project')
+                if data.get('project') != None:
+                    usergrade.grade = data.get('project')
                     usergrade.is_final = False
                     usergrade.course_id = id
                     usergrade.category = 'project'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
-                    isvalid = isvalid + 1
-                if request.POST.get('seminar') != None:
-                    usergrade.grade = request.POST.get('seminar')
+ #                   isvalid = isvalid + 1
+                if data.get('seminar') != None:
+                    usergrade.grade = data.get('seminar')
                     usergrade.is_final = False
                     usergrade.course_id = id
                     usergrade.category = 'seminar'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
-                if request.POST.get('exam') != None:
-                    usergrade.grade = request.POST.get('exam')
+                if data.get('exam') != None:
+                    usergrade.grade = data.get('exam')
                     usergrade.is_final = False
                     usergrade.course_id = id
                     usergrade.category = 'exam'
                     usergrade.professor_user_id = request.user.id
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
-                if request.POST.get('final_grade') != None:
-                    usergrade.grade = request.POST.get('final_grade')
+                if data.get('final_grade') != None:
+                    usergrade.grade = data.get('final_grade')
                     usergrade.is_final = False
                     usergrade.course_id = id
                     usergrade.category = 'finalgrade'
@@ -285,9 +283,9 @@ def course_manage(request, id):
                     usergrade.student_user_id = user_courses[user_index].profile.user_id
                     usergrade.save()
                 user_index += 1
-    ManageCourseFormSet = formset_factory(ManageCourseForm, extra = 2)
-    formset = ManageCourseFormSet()
-    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset, "isvalid": isvalid,})
+    else:
+	    formset = ManageCourseFormSet()
+    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset,})
 
 
 def signup(request):

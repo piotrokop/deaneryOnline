@@ -9,14 +9,6 @@
 	<div id="container">
 		<div id="container-title">{{ course.name }}</div>
 		<div id="container-content">
-			<p>{{isvalid}}</p>
-			<script>
-				function check()
-				{
-					aaa = {{isvalid}}
-					console.log(aaa)
-				}
-			</script>
 			<form method="post">
 				{% csrf_token %}
 				{{ formset.management_form }}
@@ -30,71 +22,68 @@
 						<th style="border-right: 1px solid #e5e6e9; width: 10%; text-align: center;">Exam</th>
 						<th style = "width: 15%; text-align: center;">Final grade</th>
 					</tr>
-					{% for user_course in user_courses %}
+					{% for form in formset %}
 						<tr>
 							<td style="border-right: 1px solid #e5e6e9;">
-								{{user_course.profile.user.first_name}} {{user_course.profile.user.last_name}}
+								John Smith 
 							</td>
-							{% for form in formset %}
-								{% if course.exercises != 0 %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										{{form.exercises}}
-									</td>
-								{% else %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										---------
-									</td>
-								{% endif %}
-								
-								{% if course.laboratories != 0 %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										{{form.laboratory}}
-									</td>
-								{% else %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										---------
-									</td>
-								{% endif %}
-								
-								{% if course.project != 0 %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										{{form.project}}
-									</td>
-								{% else %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										---------
-									</td>
-								{% endif %}
-								
-								{% if course.seminars != 0 %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										{{form.seminar}}
-									</td>
-								{% else %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										{{form.seminar}}
-									</td>
-								{% endif %}
-								
-								{% if course.exam != 0 %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										{{form.exam}}
-									</td>
-								{% else %}
-									<td style="border-right: 1px solid #e5e6e9;">
-										---------
-									</td>
-								{% endif %}
-								
+							{% if course.exercises != 0 %}
 								<td style="border-right: 1px solid #e5e6e9;">
-									{{form.final_grade}}
+									{{form.exercises}}
 								</td>
+							{% else %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									---------
+								</td>
+							{% endif %}
 								
-							{% endfor %}
+							{% if course.laboratories != 0 %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									{{form.laboratory}}
+								</td>
+							{% else %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									---------
+								</td>
+							{% endif %}
+								
+							{% if course.project != 0 %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									{{form.project}}
+								</td>
+							{% else %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									---------
+								</td>
+							{% endif %}
+								
+							{% if course.seminars != 0 %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									{{form.seminar}}
+								</td>
+							{% else %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									---------
+								</td>
+							{% endif %}
+								
+							{% if course.exam != 0 %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									{{form.exam}}
+								</td>
+							{% else %}
+								<td style="border-right: 1px solid #e5e6e9;">
+									---------
+								</td>
+							{% endif %}
+								
+							<td style="border-right: 1px solid #e5e6e9;">
+								{{form.final_grade}}
+							</td>
 						</tr>
 					{% endfor %}
 				</table>
-				<button type="submit" onclick="check();">Save</button>
+				<button type="submit">Save</button>
 			</form>
 		</div>
 	</div>
