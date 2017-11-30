@@ -73,29 +73,34 @@ def edit_course(request, id):
         form = CourseForm(request.POST, instance=course, initial=init)
 
         if form.is_valid():
-            course = form.save(commit=False)
-            if request.POST.get('if_exer'):
-                course.exercises = request.POST.get('exercises')
-            else:
-                course.exercises = 0
-            if request.POST.get('if_lab'):
-                course.laboratories = request.POST.get('laboratories')
-            else:
-                course.laboratories = 0
-            if request.POST.get('if_proj'):
-                course.project = request.POST.get('project')
-            else:
-                course.project = 0
-            if request.POST.get('if_sem'):
-                course.seminars = request.POST.get('seminars')
-            else:
-                course.seminars = 0
-            if request.POST.get('exam'):
-                course.exam = 1
-            else:
-                course.exam = 0
-            course.save()
-            return render(request, 'course/courses.html')
+			if request.POST.get('del_btn'):
+				object = Course.objects.get(course_id=id)
+				object.delete()
+				return redirect(courses)
+			else:
+				course = form.save(commit=False)
+				if request.POST.get('if_exer'):
+					course.exercises = request.POST.get('exercises')
+				else:
+					course.exercises = 0
+				if request.POST.get('if_lab'):
+					course.laboratories = request.POST.get('laboratories')
+				else:
+					course.laboratories = 0
+				if request.POST.get('if_proj'):
+					course.project = request.POST.get('project')
+				else:
+					course.project = 0
+				if request.POST.get('if_sem'):
+					course.seminars = request.POST.get('seminars')
+				else:
+					course.seminars = 0
+				if request.POST.get('exam'):
+					course.exam = 1
+				else:
+					course.exam = 0
+				course.save()
+				return redirect(courses)
     else:
         form = CourseForm(instance=course, initial=init)
 

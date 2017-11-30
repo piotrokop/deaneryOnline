@@ -57,7 +57,10 @@ Courses
 						</tr>
 					</table>
 					<br/>
-					<button type="submit" class="save btn btn-default">Submit</button>
+					<input type="submit" value="Submit"/>
+					{% if edit == 1 %}
+						<input type="submit" name="del_btn" value="Delete"/>
+					{% endif %}
 				</form>
 			</div>
 		</div>
