@@ -229,7 +229,7 @@ def course_manage(request, id):
             for form in formset:
                 usergrade = form.save(commit=False)
                 data = form.cleaned_data
-                isvalid = str(isvalid) + str('  ,  ') + data.get('project')
+                isvalid = str(isvalid) + str('  ,  ') + str(data.get('project'))
                 if request.POST.get('exercises') != None:
                     usergrade.grade = request.POST.get('exercises')
                     usergrade.is_final = False
