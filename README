@@ -9,6 +9,8 @@ CREATING ANY OTHER USER:
 USE:
 http://127.0.0.1:8000/accounts/login/
 
+CREATING DEAN:
+python manage.py createdeanuser
 
 2. CLEAN DATABASE:
 python manage.py flush
