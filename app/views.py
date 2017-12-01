@@ -129,7 +129,7 @@ def grades(request):
 		for grade in grade_set:
 			course_set.add(grade.course)
 		for c in course_set:
-			course = Course.objects.get(course_id=c)
+			course = Course.objects.get(course_id=c.course_id)
 			courses.append({'Name' : course.name ,'Id' : course.course_id , 'ECTS' : course.ects})
 		for grade in grade_set:
 			course = (c for c in courses if c['Id'] == grade.course)
@@ -225,67 +225,52 @@ def course_manage(request, id):
     course = Course.objects.get(course_id = id)
     user_courses = UserCourse.objects.filter(course=course, accepted=1)
     ManageCourseFormSet = formset_factory(ManageCourseForm, extra = user_courses.count())
-#    formset = ManageCourseFormSet(request.POST)
+    zipped = []
+    users_list = [(user_course.profile.user.first_name, user_course.profile.user.last_name) for user_course in user_courses]
     if request.method == 'POST':
         formset = ManageCourseFormSet(request.POST)
         if formset.is_valid():
             user_index = 0
             for form in formset:
-                usergrade = form.save(commit=False)
                 data = form.cleaned_data
-                if data.get('exercises') != None:
-                    usergrade.grade = data.get('exercises')
-                    usergrade.is_final = False
-                    usergrade.course_id = id
-                    usergrade.category = 'exercises'
-                    usergrade.professor_user_id = request.user.id
-                    usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()					
-                if data.get('laboratory') != None:
-                    usergrade.grade = data.get('laboratory')
-                    usergrade.is_final = False
-                    usergrade.course_id = id
-                    usergrade.category = 'laboratory'
-                    usergrade.professor_user_id = request.user.id
-                    usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save(commit=True)
-                if data.get('project') != None:
-                    usergrade.grade = data.get('project')
-                    usergrade.is_final = False
-                    usergrade.course_id = id
-                    usergrade.category = 'project'
-                    usergrade.professor_user_id = request.user.id
-                    usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()
- #                   isvalid = isvalid + 1
-                if data.get('seminar') != None:
-                    usergrade.grade = data.get('seminar')
-                    usergrade.is_final = False
-                    usergrade.course_id = id
-                    usergrade.category = 'seminar'
-                    usergrade.professor_user_id = request.user.id
-                    usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()
-                if data.get('exam') != None:
-                    usergrade.grade = data.get('exam')
-                    usergrade.is_final = False
-                    usergrade.course_id = id
-                    usergrade.category = 'exam'
-                    usergrade.professor_user_id = request.user.id
-                    usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()
-                if data.get('final_grade') != None:
-                    usergrade.grade = data.get('final_grade')
-                    usergrade.is_final = False
-                    usergrade.course_id = id
-                    usergrade.category = 'finalgrade'
-                    usergrade.professor_user_id = request.user.id
-                    usergrade.student_user_id = user_courses[user_index].profile.user_id
-                    usergrade.save()
+                zipped.append((form, users_list[user_index]))
+                for field in form:
+                    if data[field.name] != 'None' and data[field.name] != '':
+                        if field.name == 'final_grade':
+                            usergrade, created = UserGrade.objects.get_or_create(category=field.name,student_user_id=user_courses[user_index].profile.user_id, course_id=id, defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id})
+                            if created:
+                                usergrade.grade = data[field.name]
+                                usergrade.is_final = False
+                                usergrade.course_id = id
+                                usergrade.category = field.name
+                                usergrade.professor_user_id = request.user.id
+                                usergrade.student_user_id = user_courses[user_index].profile.user_id
+                                usergrade.save()
+                            else:
+                                usergrade.grade = data[field.name]
+                                usergrade.save()
+                        elif getattr(course, field.name) > 0:
+                            usergrade, created = UserGrade.objects.get_or_create(category=field.name,student_user_id=user_courses[user_index].profile.user_id, course_id=id, defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id})
+                            if created:
+                                usergrade.grade = data[field.name]
+                                usergrade.is_final = False
+                                usergrade.course_id = id
+                                usergrade.category = field.name
+                                usergrade.professor_user_id = request.user.id
+                                usergrade.student_user_id = user_courses[user_index].profile.user_id
+                                usergrade.save()
+                            else:
+                                usergrade.grade = data[field.name]
+                                usergrade.save()
                 user_index += 1
     else:
-	    formset = ManageCourseFormSet()
-    return render(request, 'course/course-manage.html', {"course": course, "user_courses": user_courses, "formset": formset,})
+        user_index = 0
+        formset = ManageCourseFormSet()
+        for form in formset:
+            zipped.append((form, users_list[user_index]))
+            user_index += 1
+
+    return render(request, 'course/course-manage.html', {"course": course, "zipped": zipped, "formset": formset, "user_courses": user_courses})
 
 
 def signup(request):

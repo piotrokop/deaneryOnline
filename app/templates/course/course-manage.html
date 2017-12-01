@@ -22,10 +22,10 @@
 						<th style="border-right: 1px solid #e5e6e9; width: 10%; text-align: center;">Exam</th>
 						<th style = "width: 15%; text-align: center;">Final grade</th>
 					</tr>
-					{% for form in formset %}
+					{% for form, user_name in zipped %}
 						<tr>
 							<td style="border-right: 1px solid #e5e6e9;">
-								John Smith 
+								{{user_name.0}} {{user_name.1}}
 							</td>
 							{% if course.exercises != 0 %}
 								<td style="border-right: 1px solid #e5e6e9;">
@@ -39,7 +39,7 @@
 								
 							{% if course.laboratories != 0 %}
 								<td style="border-right: 1px solid #e5e6e9;">
-									{{form.laboratory}}
+									{{form.laboratories}}
 								</td>
 							{% else %}
 								<td style="border-right: 1px solid #e5e6e9;">
@@ -59,7 +59,7 @@
 								
 							{% if course.seminars != 0 %}
 								<td style="border-right: 1px solid #e5e6e9;">
-									{{form.seminar}}
+									{{form.seminars}}
 								</td>
 							{% else %}
 								<td style="border-right: 1px solid #e5e6e9;">
