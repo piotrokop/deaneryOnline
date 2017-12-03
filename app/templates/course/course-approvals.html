@@ -17,7 +17,7 @@
 				{% for user_course in user_courses %}
 					<tr>
 						<td>
-							{{user_course.profile.user.first_name}} {{user_course.profile.user.last_name}}({{user_course.profile.role_id}})
+							{{user_course.profile.user.first_name}} {{user_course.profile.user.last_name}}({{user_course.profile.role}})
 						</td>
 						<td>
 							{% if user_course.accepted == 0 %}
