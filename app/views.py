@@ -218,7 +218,8 @@ def course_approvals_kick(request, course_id, user_id):
 
 @login_required()
 def createview(request):
-    return render(request, 'main.html')
+    user = DBHelper.get_user(request)
+    return render(request, 'main.html', {"role": user.role})
 	
 	
 def course_manage(request, id):
