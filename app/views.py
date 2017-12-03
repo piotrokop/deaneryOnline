@@ -42,7 +42,8 @@ def create_course(request):
         return redirect(courses);
     else:
         form = CourseForm()
-    return render(request, 'course/create-course.html', {"form" : form})
+    user = DBHelper.get_user(request)    
+    return render(request, 'course/create-course.html', {"role_obj": user.role, "form" : form})
 
 def edit_course(request, id):
     course = Course.objects.get(course_id=id)
@@ -104,7 +105,8 @@ def edit_course(request, id):
     else:
         form = CourseForm(instance=course, initial=init)
 
-    return render(request, 'course/create-course.html', {"form" : form, "edit": 1})
+    user = DBHelper.get_user(request)
+    return render(request, 'course/create-course.html', {"role_obj": user.role, "form" : form, "edit": 1})
 
 def courses(request):
     if request.user.is_authenticated():
@@ -113,7 +115,9 @@ def courses(request):
         user_courses = UserCourse.objects.filter(profile=user)
         rest_courses = Course.objects.exclude(course_id__in=[c.course_id for c in user_courses])
 
+        user = DBHelper.get_user(request)
         return render(request, 'course/courses.html', {
+            "role_obj": user.role,
             "role" : user_role,
             "rest_courses" : rest_courses,
             "user_courses" : user_courses
@@ -136,6 +140,7 @@ def grades(request):
 				if c['Id']==grade.course_id:
 					courses[c['Pos']][grade.category]=grade.grade
 		return render(request, 'course/grades.html', {
+            "role_obj": user.role,
             "gradeList" : courses
         })
 		
@@ -160,8 +165,9 @@ def course_details(request, id):
         'project': project,
         'seminars': seminars
     }
-
-    return render(request, 'course/course-details.html', {"course_details" : details})
+    
+    user = DBHelper.get_user(request)
+    return render(request, 'course/course-details.html', {"role_obj": user.role, "course_details" : details})
 
 def course_signup(request, id):
     course = Course.objects.get(course_id=id)
@@ -184,9 +190,11 @@ def course_signout(request, id):
 def course_approvals(request, id):
     course = Course.objects.get(course_id=id)
     user_role = DBHelper.get_user_role(request)
+    user = DBHelper.get_user(request)
     if user_role == Values.USER_ROLE_DEAN:
         user_courses = UserCourse.objects.filter(course=course)
         return render(request, 'course/course-approvals.html', {
+            "role_obj": user.role,
             "course" : course,
             "user_courses": user_courses
         })
@@ -219,7 +227,7 @@ def course_approvals_kick(request, course_id, user_id):
 @login_required()
 def createview(request):
     user = DBHelper.get_user(request)
-    return render(request, 'main.html', {"role": user.role})
+    return render(request, 'main.html', {"role_obj": user.role})
 	
 	
 def course_manage(request, id):
@@ -271,7 +279,8 @@ def course_manage(request, id):
             zipped.append((form, users_list[user_index]))
             user_index += 1
 
-    return render(request, 'course/course-manage.html', {"course": course, "zipped": zipped, "formset": formset, "user_courses": user_courses})
+    user = DBHelper.get_user(request)
+    return render(request, 'course/course-manage.html', {"role_obj": user.role, "course": course, "zipped": zipped, "formset": formset, "user_courses": user_courses})
 
 
 def signup(request):
