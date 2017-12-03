@@ -122,7 +122,7 @@ def courses(request):
 def grades(request):
 	if request.user.is_authenticated():
 		user = DBHelper.get_user(request)
-		grades = UserGrade.objects.filter(student_user=user)
+		grades = UserGrade.objects.filter(student_user_id=user, is_final=True)
 		course_set = Set()
 		courses = []
 		grade_set = (grade for grade in grades )
@@ -130,11 +130,11 @@ def grades(request):
 			course_set.add(grade.course)
 		for c in course_set:
 			course = Course.objects.get(course_id=c.course_id)
-			courses.append({'Name' : course.name ,'Id' : course.course_id , 'ECTS' : course.ects})
-		for grade in grade_set:
-			course = (c for c in courses if c['Id'] == grade.course)
-			for c in course:
-				c[grade.category]=grade.grade
+			courses.append({'Name' : course.name ,'Id' : course.course_id , 'ECTS' : course.ects, 'Pos' : len(courses)})
+		for grade in grades:
+			for c in courses:
+				if c['Id']==grade.course_id:
+					courses[c['Pos']][grade.category]=grade.grade
 		return render(request, 'course/grades.html', {
             "gradeList" : courses
         })
@@ -241,7 +241,7 @@ def course_manage(request, id):
                             usergrade, created = UserGrade.objects.get_or_create(category=field.name,student_user_id=user_courses[user_index].profile.user_id, course_id=id, defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id})
                             if created:
                                 usergrade.grade = data[field.name]
-                                usergrade.is_final = False
+                                usergrade.is_final = True
                                 usergrade.course_id = id
                                 usergrade.category = field.name
                                 usergrade.professor_user_id = request.user.id
@@ -254,7 +254,7 @@ def course_manage(request, id):
                             usergrade, created = UserGrade.objects.get_or_create(category=field.name,student_user_id=user_courses[user_index].profile.user_id, course_id=id, defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id})
                             if created:
                                 usergrade.grade = data[field.name]
-                                usergrade.is_final = False
+                                usergrade.is_final = True
                                 usergrade.course_id = id
                                 usergrade.category = field.name
                                 usergrade.professor_user_id = request.user.id
