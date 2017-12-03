@@ -9,6 +9,9 @@
 	<div id="container">
 		<div id="container-title">List of courses</div>
 		<div id="container-content">
+            {% if role == 3 %}
+                <input type="button" value="Create course" onclick="location.href='{% url 'create-course' %}'"></input>
+            {% endif %}
 			<table style="width: 80%;">
 				<tr>
 					<th>Course name</th>
