@@ -16,8 +16,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 #from app import views
-from app.views import createview, courses, create_course, edit_course, course_details, course_signup, course_signout, course_approvals, course_approvals_approve, course_approvals_kick, signup, course_manage
+from app.views import createview, signup, course_manage
 from app.views import grades
+from course.views import courses, create_course, edit_course, course_details, course_signup, course_signout, course_approvals, course_approvals_approve, course_approvals_kick
 urlpatterns = [
     url(r'^login/', auth_views.login, name='login'),
     url(r'^accounts/login/', auth_views.login, name='accounts-login'),

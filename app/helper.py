@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from app.models import UserRole, Course, Profile
+from app.models import UserRole, Profile
 
 
 class Values:
