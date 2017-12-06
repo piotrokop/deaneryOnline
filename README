@@ -1,10 +1,17 @@
 0. PRZENOSINY DO APLIKACJI
 
+przenosiny course:
+
 python manage.py migrate course
 insert into course_course select * from app_course
 python manage.py migrate
 !!!!
 
+przenosiny grade:
+python manage.py makemigrations
+python manage.py migrate
+python manage.py makemigrations grade
+python manage.py migrate grade
 
 1. LOGGING
 

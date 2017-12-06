@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from course.models import Course
 from decimal import Decimal
-from app.models import UserGrade
 
 class CourseForm(forms.ModelForm):
     if_exer = forms.BooleanField(required=False, label='if_exer')

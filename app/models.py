@@ -38,14 +38,3 @@ def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
-
-		
-class UserGrade(models.Model):
-	usergrade_id = models.AutoField(primary_key=True)
-	grade = models.DecimalField(max_digits=2, decimal_places=1)
-	is_final = models.BooleanField()
-	course = models.ForeignKey('course.Course')
-	category = models.CharField(max_length=30)
-	professor_user = models.ForeignKey(Profile, related_name="professor")
-	student_user = models.ForeignKey(Profile, related_name="student")
-

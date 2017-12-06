@@ -6,8 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import UserGrade
-from app.forms import SignUpForm, ManageCourseForm
+from grade.models import UserGrade
+from app.forms import SignUpForm
 from app.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
