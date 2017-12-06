@@ -1,6 +1,6 @@
 [
   {
-    "model": "app.Course",
+    "model": "course.Course",
     "pk": 1,
     "fields": {
       "course_id": 1,
@@ -15,7 +15,7 @@
     }
   },
   {
-    "model": "app.Course",
+    "model": "course.Course",
     "pk": 2,
     "fields": {
       "course_id": 2,
@@ -30,7 +30,7 @@
     }
   },
   {
-    "model": "app.Course",
+    "model": "course.Course",
     "pk": 3,
     "fields": {
       "course_id": 3,

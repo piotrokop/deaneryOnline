@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 #from app.models import Profile, Course
+from user.models import Profile
 
 # Create your models here.
         
@@ -24,6 +25,4 @@ class Course(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name        
-        
-        
+        return self.name             

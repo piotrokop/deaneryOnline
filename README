@@ -1,17 +1,12 @@
-0. PRZENOSINY DO APLIKACJI
-
-przenosiny course:
-
-python manage.py migrate course
-insert into course_course select * from app_course
-python manage.py migrate
-!!!!
-
-przenosiny grade:
+0. AFTER PULL:
+usuwamy bazę deanery i tworzymy nową deanery w pgadmin(trwa to sekundkę w pgadmin, prawym na bazę i drop, a następnie prawym na databases i create)
 python manage.py makemigrations
 python manage.py migrate
-python manage.py makemigrations grade
-python manage.py migrate grade
+python manage.py loaddata app/static/data/initial_user_roles.json
+python manage.py loaddata app/static/data/initial_users.json
+python manage.py loaddata app/static/data/initial_profiles.json
+python manage.py loaddata app/static/data/initial_courses.json
+i już działa
 
 1. LOGGING
 

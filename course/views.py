@@ -7,14 +7,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from grade.models import UserGrade
-from app.forms import SignUpForm
-from app.models import UserRole, Profile
+from user.forms import SignUpForm
+from user.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
 from sets import Set
 from course.forms import CourseForm
 from course.models import Course
-from app.models import UserCourse
+from user.models import UserCourse
 
 # Create your views here.
 def create_course(request):

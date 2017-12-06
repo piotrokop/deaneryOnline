@@ -1,20 +1,20 @@
 [
   {
-    "model": "app.UserRole",
+    "model": "user.UserRole",
     "pk": 1,
     "fields": {
       "name": "students"
     }
   },
   {
-    "model": "app.UserRole",
+    "model": "user.UserRole",
     "pk": 2,
     "fields": {
       "name": "academics"
     }
   },
   {
-    "model": "app.UserRole",
+    "model": "user.UserRole",
     "pk": 3,
     "fields": {
       "name": "deans"

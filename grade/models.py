@@ -5,7 +5,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from app.models import Profile
 
 
 class UserGrade(models.Model):
@@ -14,5 +13,5 @@ class UserGrade(models.Model):
 	is_final = models.BooleanField()
 	course = models.ForeignKey('course.Course')
 	category = models.CharField(max_length=30)
-	professor_user = models.ForeignKey(Profile, related_name="professor")
-	student_user = models.ForeignKey(Profile, related_name="student")
+	professor_user = models.ForeignKey('user.Profile', related_name="professor")
+	student_user = models.ForeignKey('user.Profile', related_name="student")

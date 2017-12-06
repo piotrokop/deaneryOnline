@@ -6,15 +6,14 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.forms import SignUpForm
-from app.models import UserRole, Profile
+from user.models import Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
 from sets import Set
 from .models import UserGrade
 from grade.forms import ManageCourseForm
 from course.models import Course
-from app.models import UserCourse
+from user.models import UserCourse
 
 def grades(request):
 	if request.user.is_authenticated():
