@@ -5,9 +5,6 @@ from django.test import TestCase
 
 # Create your tests here.
 
-class TestTestCase(TestCase):
-	def test_jeden(self):
-		pass
-	
-	def test_dwa(self):
-		pass
+import course.tests
+import user.tests
+import grade.tests
