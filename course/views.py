@@ -18,59 +18,30 @@ from user.models import UserCourse
 
 # Create your views here.
 def create_course(request):
-    if request.method == "POST":
-        form = CourseForm(request.POST)
-        course = form.save(commit=False)
-        if request.POST.get('if_exer'):
-            course.exercises = request.POST.get('exercises')
-        else:
-            course.exercises = 0
-        if request.POST.get('if_lab'):
-            course.laboratories = request.POST.get('laboratories')
-        else:
-            course.laboratories = 0
-        if request.POST.get('if_proj'):
-            course.project = request.POST.get('project')
-        else:
-            course.project = 0
-        if request.POST.get('if_sem'):
-            course.seminars = request.POST.get('seminars')
-        else:
-            course.seminars = 0
-        if request.POST.get('exam'):
-            course.exam = 1
-        else:
-            course.exam = 0
-        course.save()
-        return redirect(courses);
-    else:
-        form = CourseForm()
-    user = DBHelper.get_user(request)    
-    return render(request, 'create-course.html', {"role_obj": user.role, "form" : form})
+	if request.method == "POST":
+		form = CourseForm(request.POST)
+		course = form.save(commit=False)
+		DBHelper.add_extra_params_to_course(request,course)
+		if request.POST.get('exam'):
+			course.exam = 1
+		course.save()
+		return redirect(courses);
+	else:
+		form = CourseForm()
+	return render(request, 'create-course.html', {"form" : form})
 
 def edit_course(request, id):
     course = Course.objects.get(course_id=id)
-    inexam = True if course.exam == 1 else False
-    inexer = course.exercises if course.exercises > 0 else ''
-    inlab = course.laboratories if course.laboratories > 0 else ''
-    inproj = course.project if course.project > 0 else ''
-    insem = course.seminars if course.seminars > 0 else ''
-
-    ifexer = True if course.exercises > 0 else False
-    iflab = True if course.laboratories > 0 else False
-    ifproj = True if course.project > 0 else False
-    ifsem = True if course.seminars > 0 else False
-
     init = {
-        'exam': inexam,
-        'exercises': inexer,
-        'laboratories': inlab,
-        'project':inproj,
-        'seminars':insem,
-        'if_exer':ifexer,
-        'if_lab':iflab,
-        'if_proj':ifproj,
-        'if_sem':ifsem
+        'exam': (True if course.exam == 1 else False),
+        'exercises': course.exercises,
+        'laboratories': course.laboratories,
+        'project': course.project,
+        'seminars': course.seminars,
+        'if_exer': (True if course.exercises else False),
+        'if_lab': (True if course.laboratories else False),
+        'if_proj': (True if course.project else False),
+        'if_sem': (True if course.seminars else False)
     }
 
     if request.method == "POST":
@@ -83,33 +54,15 @@ def edit_course(request, id):
 				return redirect(courses)
 			else:
 				course = form.save(commit=False)
-				if request.POST.get('if_exer'):
-					course.exercises = request.POST.get('exercises')
-				else:
-					course.exercises = 0
-				if request.POST.get('if_lab'):
-					course.laboratories = request.POST.get('laboratories')
-				else:
-					course.laboratories = 0
-				if request.POST.get('if_proj'):
-					course.project = request.POST.get('project')
-				else:
-					course.project = 0
-				if request.POST.get('if_sem'):
-					course.seminars = request.POST.get('seminars')
-				else:
-					course.seminars = 0
+				DBHelper.add_extra_params_to_course(request,course)
 				if request.POST.get('exam'):
 					course.exam = 1
-				else:
-					course.exam = 0
 				course.save()
 				return redirect(courses)
     else:
         form = CourseForm(instance=course, initial=init)
 
-    user = DBHelper.get_user(request)
-    return render(request, 'create-course.html', {"role_obj": user.role, "form" : form, "edit": 1})
+    return render(request, 'create-course.html', {"form" : form, "edit": 1})
 
 def courses(request):
     if request.user.is_authenticated():

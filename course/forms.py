@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from course.models import Course
 from decimal import Decimal
+from django.core.validators import EMPTY_VALUES
 
 class CourseForm(forms.ModelForm):
     if_exer = forms.BooleanField(required=False, label='if_exer')
@@ -18,4 +19,11 @@ class CourseForm(forms.ModelForm):
         model = Course
         fields = ('name', 'description', 'ects')
         
-        
+    def clean(self):
+        cleaned_data=super(CourseForm, self).clean()
+        is_active = cleaned_data.get('if_exer', False)
+        if is_active:
+            activity_name = cleaned_data.get('exercises', None)
+            if activity_name in EMPTY_VALUES:
+                self.cleaned_data['exercises'] = 0
+        return self.cleaned_data
