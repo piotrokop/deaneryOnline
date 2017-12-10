@@ -21,7 +21,6 @@ def create_course(request):
 	if request.method == "POST":
 		form = CourseForm(request.POST)
 		course = form.save(commit=False)
-		DBHelper.add_extra_params_to_course(request,course)
 		if request.POST.get('exam'):
 			course.exam = 1
 		course.save()
@@ -46,7 +45,6 @@ def edit_course(request, id):
 
     if request.method == "POST":
         form = CourseForm(request.POST, instance=course, initial=init)
-
         if form.is_valid():
 			if request.POST.get('del_btn'):
 				object = Course.objects.get(course_id=id)
@@ -54,16 +52,15 @@ def edit_course(request, id):
 				return redirect(courses)
 			else:
 				course = form.save(commit=False)
-				DBHelper.add_extra_params_to_course(request,course)
 				if request.POST.get('exam'):
 					course.exam = 1
 				course.save()
 				return redirect(courses)
     else:
         form = CourseForm(instance=course, initial=init)
-
     return render(request, 'create-course.html', {"form" : form, "edit": 1})
 
+@login_required()	
 def courses(request):
     if request.user.is_authenticated():
         user_role = DBHelper.get_user_role(request)
