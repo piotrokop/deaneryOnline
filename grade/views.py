@@ -31,9 +31,14 @@ def grades(request):
 			for c in courses:
 				if c['Id']==grade.course_id:
 					courses[c['Pos']][grade.category]=grade.grade
+		sum,pkt =0.0,0
+		for c in courses:
+			sum += float(c['final_grade']) * c['ECTS']
+			pkt += c['ECTS'] if c['final_grade'] else 0
 		return render(request, 'grades.html', {
             "role_obj": user.role,
-            "gradeList" : courses
+            "gradeList" : courses,
+			"average" : (sum/pkt)
         })
 		
 		
