@@ -64,6 +64,7 @@ def edit_course(request, id):
 
     return render(request, 'create-course.html', {"form" : form, "edit": 1})
 
+@login_required()	
 def courses(request):
     if request.user.is_authenticated():
         user_role = DBHelper.get_user_role(request)
