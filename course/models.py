@@ -14,11 +14,11 @@ class Course(models.Model):
     course_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     description = models.TextField(null=True)
-    exercises = models.IntegerField(null=True)
-    laboratories = models.IntegerField(null=True)
-    project = models.IntegerField(null=True)
-    seminars = models.IntegerField(null=True)
-    exam = models.IntegerField(null=True)
+    exercises = models.IntegerField(null=True, default=None, blank=True)
+    laboratories = models.IntegerField(null=True, default=None, blank=True)
+    project = models.IntegerField(null=True, default=None, blank=True)
+    seminars = models.IntegerField(null=True, default=None, blank=True)
+    exam = models.IntegerField(null=True, default=None, blank=True)
     ects = models.IntegerField(null=True)
 
     class Meta:

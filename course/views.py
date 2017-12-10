@@ -21,7 +21,6 @@ def create_course(request):
 	if request.method == "POST":
 		form = CourseForm(request.POST)
 		course = form.save(commit=False)
-		DBHelper.add_extra_params_to_course(request,course)
 		if request.POST.get('exam'):
 			course.exam = 1
 		course.save()
@@ -54,7 +53,6 @@ def edit_course(request, id):
 				return redirect(courses)
 			else:
 				course = form.save(commit=False)
-				DBHelper.add_extra_params_to_course(request,course)
 				if request.POST.get('exam'):
 					course.exam = 1
 				course.save()

@@ -21,21 +21,3 @@ class DBHelper:
         user_role = DBHelper.get_user(request).role.pk
         return user_role
 		
-    @staticmethod
-    def add_extra_params_to_course(request,course):
-        if request.POST.get('if_exer') and request.POST.get('exercises'):
-            course.exercises = request.POST.get('exercises')
-        else:
-            course.exercises = None
-        if request.POST.get('if_lab') and request.POST.get('laboratories'):
-            course.laboratories = request.POST.get('laboratories')
-        else:
-            course.laboratories = None
-        if request.POST.get('if_proj') and request.POST.get('project'):
-            course.project = request.POST.get('project')
-        else:
-            course.project = None
-        if request.POST.get('if_sem') and request.POST.get('seminars'):
-            course.seminars = request.POST.get('seminars')
-        else:
-            course.seminars = None
