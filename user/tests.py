@@ -16,10 +16,8 @@ class UserCourseTestCase(TestCase):
 		self.course1 = Course.objects.create(
 			name = 'Test1',
 			description = 'Description for test1',
-			exercises = None,
 			laboratories = 70,
 			project = 30,
-			seminars = None,
 			exam = 1,
 			ects = 5
 			)
@@ -27,9 +25,6 @@ class UserCourseTestCase(TestCase):
 			name = 'Test2',
 			description = 'Description for test2',
 			exercises = 120,
-			laboratories = None,
-			project = None,
-			seminars = None,
 			exam = 0,
 			ects = 3
 			)
@@ -70,7 +65,6 @@ class UserCourseTestCase(TestCase):
 			profile = self.professor.profile,
 			course = self.course1,
 			accepted = True)
-		pass
 
 	def test_get_role_by_name(self):
 		try:

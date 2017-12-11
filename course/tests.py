@@ -16,7 +16,6 @@ class CourseTestCase(TestCase):
 			exercises = None,
 			laboratories = 70,
 			project = 30,
-			seminars = None,
 			exam = 1,
 			ects = 5
 			)
@@ -24,9 +23,6 @@ class CourseTestCase(TestCase):
 			name = 'Test2',
 			description = 'Description for test2',
 			exercises = 120,
-			laboratories = None,
-			project = None,
-			seminars = None,
 			exam = 0,
 			ects = 3
 			)
