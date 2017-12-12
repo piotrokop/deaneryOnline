@@ -31,6 +31,7 @@ class Command(BaseCommand):
         user_id = User.objects.latest('id').id
         user = User.objects.get(pk=user_id)
 
+        user.profile.role_id = dean_role
         user.first_name = first_name
         user.last_name = last_name
         user.save()

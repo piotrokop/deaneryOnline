@@ -38,7 +38,7 @@ def grades(request):
 		return render(request, 'grades.html', {
             "role_obj": user.role,
             "gradeList" : courses,
-			"average" : (sum/pkt)
+			"average" : "{0:.2f}".format((sum/pkt) if pkt else 0)
         })
 		
 		
@@ -57,33 +57,21 @@ def course_manage(request, id):
                 data = form.cleaned_data
                 zipped.append((form, users_list[user_index]))
                 for field in form:
-                    if data[field.name] != 'None' and data[field.name] != '':
-                        if field.name == 'final_grade':
-                            usergrade, created = UserGrade.objects.get_or_create(category=field.name,student_user_id=user_courses[user_index].profile.user_id, course_id=id, defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id})
-                            if created:
-                                usergrade.grade = data[field.name]
-                                usergrade.is_final = True
-                                usergrade.course_id = id
-                                usergrade.category = field.name
-                                usergrade.professor_user_id = request.user.id
-                                usergrade.student_user_id = user_courses[user_index].profile.user_id
-                                usergrade.save()
-                            else:
-                                usergrade.grade = data[field.name]
-                                usergrade.save()
-                        elif getattr(course, field.name) > 0:
-                            usergrade, created = UserGrade.objects.get_or_create(category=field.name,student_user_id=user_courses[user_index].profile.user_id, course_id=id, defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id})
-                            if created:
-                                usergrade.grade = data[field.name]
-                                usergrade.is_final = True
-                                usergrade.course_id = id
-                                usergrade.category = field.name
-                                usergrade.professor_user_id = request.user.id
-                                usergrade.student_user_id = user_courses[user_index].profile.user_id
-                                usergrade.save()
-                            else:
-                                usergrade.grade = data[field.name]
-                                usergrade.save()
+                    if data[field.name] != 'None' and data[field.name] != '' and (field.name == 'final_grade' or getattr(course, field.name) > 0):
+                        usergrade, created = UserGrade.objects.get_or_create(
+                            category=field.name,
+                            student_user_id=user_courses[user_index].profile.user_id,
+                            course_id=id,
+                            defaults={'grade': 3.0, 'is_final': False, 'professor_user_id': request.user.id}
+                        )
+                        if created:
+                            usergrade.is_final = True
+                            usergrade.course_id = id
+                            usergrade.category = field.name
+                            usergrade.professor_user_id = request.user.id
+                            usergrade.student_user_id = user_courses[user_index].profile.user_id
+                        usergrade.grade = data[field.name]
+                        usergrade.save()
                 user_index += 1
     else:
         user_index = 0

@@ -27,7 +27,7 @@
 							<td style="border-right: 1px solid #e5e6e9;">
 								{{user_name.0}} {{user_name.1}}
 							</td>
-							{% if course.exercises != 0 %}
+							{% if course.exercises %}
 								<td style="border-right: 1px solid #e5e6e9;">
 									{{form.exercises}}
 								</td>
@@ -37,7 +37,7 @@
 								</td>
 							{% endif %}
 								
-							{% if course.laboratories != 0 %}
+							{% if course.laboratories %}
 								<td style="border-right: 1px solid #e5e6e9;">
 									{{form.laboratories}}
 								</td>
@@ -47,7 +47,7 @@
 								</td>
 							{% endif %}
 								
-							{% if course.project != 0 %}
+							{% if course.project %}
 								<td style="border-right: 1px solid #e5e6e9;">
 									{{form.project}}
 								</td>
@@ -57,7 +57,7 @@
 								</td>
 							{% endif %}
 								
-							{% if course.seminars != 0 %}
+							{% if course.seminars %}
 								<td style="border-right: 1px solid #e5e6e9;">
 									{{form.seminars}}
 								</td>
@@ -67,7 +67,7 @@
 								</td>
 							{% endif %}
 								
-							{% if course.exam != 0 %}
+							{% if course.exam %}
 								<td style="border-right: 1px solid #e5e6e9;">
 									{{form.exam}}
 								</td>
