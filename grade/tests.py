@@ -10,7 +10,7 @@ from sets import Set
 
 # Create your tests here.
 
-class UserUserGradeTestCase(TestCase):
+class UserGradeTestCase(TestCase):
 
 	def setUp(self):
 		self.course1 = Course.objects.create(
