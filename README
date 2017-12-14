@@ -1,3 +1,15 @@
+BASIC STEPS TO RUN THE PROJECT:
+1. Install PostgreSQL
+2. Config PotgreSQL:
+    'NAME': 'deanery',
+    'USER': 'deanery',
+    'PASSWORD': 'deanery098',
+    'HOST': 'localhost',
+    'PORT': '5432',
+3. python manage.py migrate
+4. python manage.py loaddata app/static/data/initial_user_roles.json
+5. python manage.py runserver
+
 0. AFTER PULL:
 usuwamy bazę deanery i tworzymy nową deanery w pgadmin(trwa to sekundkę w pgadmin, prawym na bazę i drop, a następnie prawym na databases i create)
 python manage.py makemigrations
