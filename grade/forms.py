@@ -3,9 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 from grade.models import UserGrade
-		
-		
-		
+
+
+
 class ManageCourseForm(forms.ModelForm):
     GRADE_CHOICES = (
         ('None', 'None'),
@@ -22,7 +22,7 @@ class ManageCourseForm(forms.ModelForm):
     seminars = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
     exam = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
     final_grade = forms.ChoiceField(choices=GRADE_CHOICES, required = False)
-	
+
     class Meta:
         model = UserGrade
         fields = ('exercises', 'laboratories', 'project', 'seminars', 'exam', 'final_grade')

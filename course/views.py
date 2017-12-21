@@ -18,16 +18,16 @@ from user.models import UserCourse
 
 # Create your views here.
 def create_course(request):
-	if request.method == "POST":
-		form = CourseForm(request.POST)
-		course = form.save(commit=False)
-		if request.POST.get('exam'):
-			course.exam = 1
-		course.save()
-		return redirect(courses);
-	else:
-		form = CourseForm()
-	return render(request, 'create-course.html', {"form" : form})
+    if request.method == "POST":
+        form = CourseForm(request.POST)
+        course = form.save(commit=False)
+        if request.POST.get('exam'):
+            course.exam = 1
+        course.save()
+        return redirect(courses);
+    else:
+        form = CourseForm()
+    return render(request, 'create-course.html', {"form" : form})
 
 def edit_course(request, id):
     course = Course.objects.get(course_id=id)
@@ -46,21 +46,21 @@ def edit_course(request, id):
     if request.method == "POST":
         form = CourseForm(request.POST, instance=course, initial=init)
         if form.is_valid():
-			if request.POST.get('del_btn'):
-				object = Course.objects.get(course_id=id)
-				object.delete()
-				return redirect(courses)
-			else:
-				course = form.save(commit=False)
-				if request.POST.get('exam'):
-					course.exam = 1
-				course.save()
-				return redirect(courses)
+            if request.POST.get('del_btn'):
+                object = Course.objects.get(course_id=id)
+                object.delete()
+                return redirect(courses)
+            else:
+                course = form.save(commit=False)
+                if request.POST.get('exam'):
+                    course.exam = 1
+                course.save()
+                return redirect(courses)
     else:
         form = CourseForm(instance=course, initial=init)
     return render(request, 'create-course.html', {"form" : form, "edit": 1})
 
-@login_required()	
+@login_required()
 def courses(request):
     if request.user.is_authenticated():
         user_role = DBHelper.get_user_role(request)

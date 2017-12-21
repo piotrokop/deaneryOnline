@@ -20,4 +20,3 @@ class DBHelper:
     def get_user_role(request):
         user_role = DBHelper.get_user(request).role.pk
         return user_role
-		

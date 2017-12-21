@@ -41,9 +41,9 @@ def grades(request):
             "gradeList" : courses,
             "average" : "{0:.2f}".format((sum/pkt) if pkt else 0)
         })
-		
-		
-	
+
+
+
 def course_manage(request, id):
     course = Course.objects.get(course_id = id)
     user_courses = UserCourse.objects.filter(course=course, accepted=1, profile__role=1)
@@ -75,4 +75,3 @@ def course_manage(request, id):
 
     user = DBHelper.get_user(request)
     return render(request, 'course-manage.html', {"role_obj": user.role, "course": course, "zipped": zipped, "formset": formset, "user_courses": user_courses})
-		
