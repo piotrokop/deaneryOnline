@@ -18,7 +18,7 @@ def grades(request):
     if request.user.is_authenticated():
         user = DBHelper.get_user(request)
         grades = UserGrade.objects.filter(student_user_id=user, is_final=True)
-        course_set = Set()
+        course_set = set()
         courses = []
         grade_set = (grade for grade in grades )
         for grade in grade_set:
