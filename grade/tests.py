@@ -6,7 +6,6 @@ from course.models import Course
 from user.models import UserCourse, UserRole, Profile
 from django.contrib.auth.models import User
 from grade.models import UserGrade
-from sets import Set
 
 # Create your tests here.
 
@@ -91,7 +90,7 @@ class UserGradeTestCase(TestCase):
             student_user = self.student2.profile)
 
     def internal_posession_function(self,grades):
-        course_set = Set()
+        course_set = set()
         courses = []
         grade_set = (grade for grade in grades )
         for grade in grade_set:
@@ -114,7 +113,7 @@ class UserGradeTestCase(TestCase):
     def test_get_all_professor_grades(self):
         grades = UserGrade.objects.filter(professor_user_id=self.professor.id, is_final=True)
         self.assertEqual(len(grades), 3)
-        course_part_set = Set()
+        course_part_set = set()
         for grade in grades:
             course_part_set.add(grade.category)
         self.assertEqual(len(course_part_set), 2)
