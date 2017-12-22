@@ -11,7 +11,6 @@ from user.forms import SignUpForm
 from user.models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
-from sets import Set
 from course.forms import CourseForm
 from course.models import Course
 from user.models import UserCourse

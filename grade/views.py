@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from user.models import Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
-from sets import Set
 from .models import UserGrade
 from grade.forms import ManageCourseForm
 from course.models import Course

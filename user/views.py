@@ -10,7 +10,6 @@ from .forms import SignUpForm
 from .models import UserRole, Profile
 from django.contrib.auth.models import User
 from app.helper import Values, DBHelper
-from sets import Set
 from grade.models import UserGrade
 from course.forms import CourseForm
 from user.models import UserCourse
