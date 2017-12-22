@@ -1,11 +1,11 @@
 BASIC STEPS TO RUN THE PROJECT:
 1. Install PostgreSQL
-2. Config PotgreSQL:
-    'NAME': 'deanery',
-    'USER': 'deanery',
-    'PASSWORD': 'deanery098',
-    'HOST': 'localhost',
-    'PORT': '5432',
+2. PotgreSQL config :
+    database name: deanery
+    database user: deanery
+    database user password: deanery098
+    database ip: localhost
+    database port: 5432
 3. python manage.py migrate
 4. python manage.py loaddata app/static/data/initial_user_roles.json
 5. python manage.py runserver
